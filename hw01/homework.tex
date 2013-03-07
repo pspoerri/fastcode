@@ -164,13 +164,6 @@
 \newcommand{\rd}{\R^D}
 \newcommand{\rr}[2]{\R^{#1 \times #2}}
 
-% \newcommand*{\titleSW}{\begingroup% Story of Writing
-% \raggedleft
-% \vspace*{\baselineskip}
-% {\Huge\textbf{Computer Graphics}}\\[\baselineskip]
-% {\large\textbf{ Exercise 1}}\\[\baselineskip]
-% {\small Pascal Spörri (pascal@spoerri.io)}\
-
 \usepackage{placeins}
 
 \newcommand*{\titleSW}[3]{\begingroup% Story of Writing
@@ -288,14 +281,20 @@ C gettimeofday() function:
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.7\textwidth]{mmm/GFlops.pdf}
-\caption{Achieved GFlop/s of \lstinline{mmm.c} in cycles. Compiler: GCC 4.7.2, Flags: \lstinline{-O3 -m64 -fno-tree-vectorize}.}
+\includegraphics[width=0.7\textwidth]{mmm/FlopsCycle.pdf}
+\caption{Achieved Flops/cyclce of \lstinline{mmm.c}. Compiler: GCC 4.7.2, Flags: \lstinline{-O3 -m64 -fno-tree-vectorize}.}
 \end{figure}
+
+%\begin{figure}[H]
+%\centering
+%\includegraphics[width=0.7\textwidth]{mmm/GFlops.pdf}
+%\caption{Achieved GFlop/s of \lstinline{mmm.c} in cycles. Compiler: GCC 4.7.2, Flags: \lstinline{-O3 -m64 -fno-tree-vectorize}.}
+%\end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{mmm/PeakPerformancePercentage.pdf}
-\caption{Achieved peak performance (percentage) of \lstinline{mmm.c} in cycles. Compiler: GCC 4.7.2, Flags: \lstinline{-O3 -m64 -fno-tree-vectorize}.}
+\caption{Achieved peak performance (percentage) of \lstinline{mmm.c}. Compiler: GCC 4.7.2, Flags: \lstinline{-O3 -m64 -fno-tree-vectorize}.}
 \end{figure}
 We observe that we don't manage to use the utilise all the available floating point units. 
 
@@ -309,10 +308,17 @@ The implementation of the ''daxpy'' function was straightforward. We copied the 
 \caption{Runtime of \lstinline{daxpy.c} in cycles. Compiler: GCC 4.7.2, Flags: \lstinline{-O3 -m64 -fno-tree-vectorize}.}
 \end{figure}
 
+
+%\begin{figure}[H]
+%\centering
+%\includegraphics[width=0.7\textwidth]{daxpy/GFlops.pdf}
+%\caption{Achieved GFlop/s of \lstinline{daxpy.c} in cycles. Compiler: GCC 4.7.2, Flags: \lstinline{-O3 -m64 -fno-tree-vectorize}.}
+%\end{figure}
+
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.7\textwidth]{daxpy/GFlops.pdf}
-\caption{Achieved GFlop/s of \lstinline{daxpy.c} in cycles. Compiler: GCC 4.7.2, Flags: \lstinline{-O3 -m64 -fno-tree-vectorize}.}
+\includegraphics[width=0.7\textwidth]{daxpy/FlopsCycle.pdf}
+\caption{Achieved Flops/Cycle of \lstinline{daxpy.c}. Compiler: GCC 4.7.2, Flags: \lstinline{-O3 -m64 -fno-tree-vectorize}.}
 \end{figure}
 
 \begin{figure}[H]

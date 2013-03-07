@@ -53,10 +53,12 @@ def main():
     data = [unfiltered[0][0::2], mintime]
 # print zip(data[0], data[1])
     gflops = map(lambda l: float(l[0])*2.0/l[1]/float(1e9), zip(data[0], data[1]))
+    flops_cycle = map(lambda l: float(l[0])*2.0/l[1], zip(data[0], mincycles))
     peak_performance = map(lambda l: l/(5.6/100), gflops)
 #    print gflops
     plot_data(data[0], mincycles, "Runtime (cycles)")
     plot_data(data[0], gflops, "GFLop/s")
+    plot_data(data[0], flops_cycle, "Flops/Cycle")
     plot_data(data[0], peak_performance, "Peak Performance (Percentage)")
 
 
