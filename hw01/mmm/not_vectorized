@@ -1,0 +1,165 @@
+##############################################################
+## RUN 100
+##############################################################
+m=100 k=100 n=100
+RDTSC instruction:
+ 2393049.671875 cycles measured => 0.000920 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+m=100 k=100 n=100
+RDTSC instruction:
+ 2397681.437500 cycles measured => 0.000922 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+##############################################################
+## RUN 200
+##############################################################
+m=200 k=200 n=200
+RDTSC instruction:
+ 22046439.000000 cycles measured => 0.008479 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+m=200 k=200 n=200
+RDTSC instruction:
+ 22753193.875000 cycles measured => 0.008751 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+##############################################################
+## RUN 300
+##############################################################
+m=300 k=300 n=300
+RDTSC instruction:
+ 80396091.500000 cycles measured => 0.030922 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+m=300 k=300 n=300
+RDTSC instruction:
+ 75926044.000000 cycles measured => 0.029202 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+##############################################################
+## RUN 400
+##############################################################
+m=400 k=400 n=400
+RDTSC instruction:
+ 218176902.000000 cycles measured => 0.083914 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+m=400 k=400 n=400
+RDTSC instruction:
+ 218149074.000000 cycles measured => 0.083903 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+##############################################################
+## RUN 500
+##############################################################
+m=500 k=500 n=500
+RDTSC instruction:
+ 416009992.000000 cycles measured => 0.160004 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+m=500 k=500 n=500
+RDTSC instruction:
+ 423029152.000000 cycles measured => 0.162704 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+##############################################################
+## RUN 600
+##############################################################
+m=600 k=600 n=600
+RDTSC instruction:
+ 2662026499.000000 cycles measured => 1.023856 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+m=600 k=600 n=600
+RDTSC instruction:
+ 2710832921.000000 cycles measured => 1.042628 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+##############################################################
+## RUN 700
+##############################################################
+m=700 k=700 n=700
+RDTSC instruction:
+ 6626138023.000000 cycles measured => 2.548515 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+m=700 k=700 n=700
+RDTSC instruction:
+ 6244461270.000000 cycles measured => 2.401716 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+##############################################################
+## RUN 800
+##############################################################
+m=800 k=800 n=800
+RDTSC instruction:
+ 8627616554.000000 cycles measured => 3.318314 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+m=800 k=800 n=800
+RDTSC instruction:
+ 9331265901.000000 cycles measured => 3.588948 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+##############################################################
+## RUN 900
+##############################################################
+m=900 k=900 n=900
+RDTSC instruction:
+ 13726016540.000000 cycles measured => 5.279237 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+m=900 k=900 n=900
+RDTSC instruction:
+ 13411879878.000000 cycles measured => 5.158415 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+##############################################################
+## RUN 1000
+##############################################################
+m=1000 k=1000 n=1000
+RDTSC instruction:
+ 19840708756.000000 cycles measured => 7.631042 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+m=1000 k=1000 n=1000
+RDTSC instruction:
+ 18605259735.000000 cycles measured => 7.155869 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+##############################################################
+## RUN 1100
+##############################################################
+m=1100 k=1100 n=1100
+RDTSC instruction:
+ 26150464010.000000 cycles measured => 10.057871 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+m=1100 k=1100 n=1100
+RDTSC instruction:
+ 26049555430.000000 cycles measured => 10.019060 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+##############################################################
+## RUN 1200
+##############################################################
+m=1200 k=1200 n=1200
+RDTSC instruction:
+ 34212268550.000000 cycles measured => 13.158565 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+m=1200 k=1200 n=1200
+RDTSC instruction:
+ 32988175141.000000 cycles measured => 12.687760 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+##############################################################
+## RUN 1300
+##############################################################
+m=1300 k=1300 n=1300
+RDTSC instruction:
+ 43200175843.000000 cycles measured => 16.615452 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+m=1300 k=1300 n=1300
+RDTSC instruction:
+ 43814323292.000000 cycles measured => 16.851663 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+##############################################################
+## RUN 1400
+##############################################################
+m=1400 k=1400 n=1400
+RDTSC instruction:
+ 57208801830.000000 cycles measured => 22.003385 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+m=1400 k=1400 n=1400
+RDTSC instruction:
+ 56182685840.000000 cycles measured => 21.608725 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+##############################################################
+## RUN 1500
+##############################################################
+m=1500 k=1500 n=1500
+RDTSC instruction:
+ 70034851135.000000 cycles measured => 26.936481 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
+m=1500 k=1500 n=1500
+RDTSC instruction:
+ 70237889015.000000 cycles measured => 27.014573 seconds, assuming frequency is 2600.000000 MHz. (change in source file if different)
+
