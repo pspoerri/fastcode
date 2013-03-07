@@ -255,7 +255,7 @@ Using an Intel Sandy Bridge architecture slideset\footnote{\url{https://www.cesg
 \end{align}
 
 \section{Matrix Multiplication}
-In order to get accurate timings on OSX we installed and activated the DisableTurboBoost kernel module\footnote{\url{https://github.com/nanoant/DisableTurboBoost.kext}} on the computer. The \lstinline{sysctl} now shows:
+In order to get accurate timings on OSX we installed and activated the DisableTurboBoost kernel module\footnote{\url{https://github.com/nanoant/DisableTurboBoost.kext}} on the computer. The \lstinline{sysctl} command now shows for the CPU frequency:
 \begin{lstlisting}[caption=Bash output of the sysctl command]
 # sysctl -a hw | grep cpufrequency
 hw.cpufrequency: 2600000000
