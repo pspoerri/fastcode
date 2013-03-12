@@ -1,0 +1,260 @@
+\documentclass[portrait,a4paper]{article}
+
+
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+
+
+\usepackage{mathtools}
+\usepackage{amssymb,amsfonts,amsmath}
+\usepackage[e]{esvect}
+
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\newcommand{\algorithmlabel}[2]{{
+    \renewcommand{\algorithmicensure}{\textbf{#1}:}
+    \ENSURE{#2~}
+}}
+
+\usepackage{graphicx}
+\usepackage[svgnames]{xcolor}
+
+\usepackage{geometry}
+\geometry{a4paper}
+
+% multirow and multicol
+\usepackage{multirow}
+\usepackage{multicol}
+\columnsep24pt
+\columnseprule0.1pt
+
+% enumerate
+\renewcommand\theenumi{\arabic{enumi}}
+\renewcommand\labelenumi{\theenumi.}
+\renewcommand\theenumii{\roman{enumii}}
+\renewcommand\labelenumii{\theenumii)}
+
+\usepackage{listings}
+\lstset{
+    floatplacement={tbp},
+    basicstyle=\ttfamily\mdseries,
+    identifierstyle=,
+    stringstyle=\color{gray},
+    numbers=left,
+    numbersep=5pt,
+    inputencoding=utf8x,
+    xleftmargin=8pt,
+    xrightmargin=8pt,
+    keywordstyle=[1]\bfseries,
+    keywordstyle=[2]\bfseries,
+    keywordstyle=[3]\bfseries,
+    keywordstyle=[4]\bfseries,
+    numberstyle=\tiny,
+    stepnumber=1,
+    breaklines=true,
+    frame=lines,
+    showstringspaces=false,
+    tabsize=2,
+    commentstyle=\color{gray},
+    captionpos=b,
+    float=float,
+    language={Java}
+}
+\newcommand{\code}[1]{\lstinline{#1}}
+
+% hyperref
+\usepackage[colorlinks=true,pdfborder={0 0 0},citecolor=DarkGreen,linkcolor=DarkBlue,urlcolor=DarkBlue]{hyperref}
+
+% depth of section numbering
+\setcounter{secnumdepth}{4}
+
+% redefine the \paragraph command:
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{0mm}%
+    {-\baselineskip}%
+    {0.5\baselineskip}%
+    {\normalfont\bfseries}%
+}%
+\makeatother
+
+% new chapter command
+\newcommand{\newchapter}{\clearpage\pagebreak}
+
+% theorems
+\usepackage{amsthm}
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{remark}{Remark}[section]
+\newtheorem{observation}{Observation}[section]
+\newtheorem{assumption}{Assumption}[section]
+\newtheorem{proposition}{Proposition}[section]
+
+% autoref names
+\newcommand{\specialref}[2]{\hyperref[#1]{#2~\ref*{#1}}}
+\def\lstlistingautorefname{Listing}
+\def\subsubsectionautorefname{Section}
+\def\subsectionautorefname{Section}
+\def\figureautorefname{Figure}
+
+% parindent
+\parindent0px
+\parskip3pt
+
+% redefine greek letters
+\renewcommand{\phi}{\varphi}
+\renewcommand{\epsilon}{\varepsilon}
+
+% shortcuts in math mode
+% \newcommand{\bs}{\boldsymbol}
+\newcommand{\mc}{\mathcal}
+\newcommand{\ds}{\displaystyle}
+\DeclarePairedDelimiter\absimpl{\lvert}{\rvert}
+\DeclarePairedDelimiter\normimpl{\lVert}{\rVert}
+\newcommand{\abs}[1]{\absimpl*{#1}}
+\newcommand{\norm}[1]{\normimpl*{#1}}
+\newcommand{\argmax}{\operatorname*{arg\,max}}
+\newcommand{\argmin}{\operatorname*{arg\,min}}
+
+% number sets
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\powerset}{\mathcal P}
+
+% probabilities
+\newcommand{\Prob}[1]{\operatorname{Pr}\left[#1\right]}
+\newcommand{\Ex}[1]{\mathbb{E}\left[#1\right]}
+
+% misc
+\newcommand{\bigO}[1]{\mc O\left(#1\right)} % big-o notation
+
+\newcommand{\nop}[1]{} % temporarily remove from output
+
+
+
+
+% todo
+\usepackage{framed}
+\newenvironment{todo}
+{\color{DarkRed} \begin{leftbar}}
+{\end{leftbar}}
+\newcommand{\inlinetodo}[1]{{\textcolor{DarkRed}{ [\textbf{TODO}: #1]}}}
+\newcommand{\mat}[1]{\bs{#1}}
+\newcommand{\ma}{\mat{A}}
+\newcommand{\mb}{\mat{B}}
+\newcommand{\mx}{\mat{X}}
+\newcommand{\mv}{\mat{V}}
+\newcommand{\muu}{\mat{U}}
+\newcommand{\md}{\mat{D}}
+\newcommand{\ms}{\mat{S}}
+\newcommand{\mz}{\mat{Z}}
+
+\newcommand{\vx}{\mat{x}}
+\newcommand{\va}{\mat{a}}
+\newcommand{\vb}{\mat{b}}
+\newcommand{\vu}{\mat{u}}
+\newcommand{\vz}{\mat{z}}
+
+\newcommand{\rd}{\R^D}
+\newcommand{\rr}[2]{\R^{#1 \times #2}}
+
+\usepackage{placeins}
+
+\newcommand*{\titleSW}[3]{\begingroup% Story of Writing
+\raggedleft
+\vspace*{\baselineskip}
+{\Huge\textbf{#1}}\\[0.7\baselineskip]
+{\large\textbf{#2}}\\[0.5\baselineskip]
+{\small #3}\par
+\endgroup}
+
+\begin{document}
+
+ \author{Pascal Spörri\\pascal@spoerri.io}
+ \title{HOWTO WRITE FAST NUMERICAL CODE\\ EXERCISE 2}
+ \date{\today}
+\maketitle
+
+\section{Project Information}
+\section{Microbenchmarks}
+For this exercise we had to benchmark several mathematical functions:
+\begin{itemize}
+    \item $y=\sin(x)$, C Function: \lstinline{y=sin(x)}
+    \item $y=\log(x+0.1)$, C Function: \lstinline{y=log(x+0.1)}
+    \item $y=e^x$, C Function: \lstinline{y=exp(x)}
+    \item $y={1\over x+1}$, C Function: \lstinline{y=1.0/(x+1.0)}
+    \item $y=x^2$, C Function: \lstinline{y=x*x}
+\end{itemize}
+Since we benchmark on OSX we had the problem that we couldn't use \lstinline{-march=corei7-avx} since the provided Apple assembler is unable to generate AVX code. Using a tip\footnote{\url{http://old.nabble.com/Re\%3a-gcc,-as,-AVX,-binutils-and-MacOS-X-10.7-p32584737.html}} we were able to replace the \lstinline{as} program on our machines with the assembler from clang. 
+
+\paragraph*{System Setup:}
+\begin{description}
+    \item[Compiler:] gcc-4.7 (GCC) 4.7.2
+    \item[Assembler:] Apple clang version 4.1 (tags/Apple/clang-421.11.66) (based on LLVM 3.1svn)
+    \item[Operating System:] Mac OSX 10.8.2
+    \item[CPU:] Intel(R) Core(TM) i7-3720QM CPU @ 2.60GHz
+\end{description}
+
+We benchmarked our code with the following flags enabled: \lstinline{-O3 -m64 -march=corei7-avx -fno-tree-vectorize}. We deliberately disabled vectorization since the automatic vectorization support for GCC is perceived as poor and we wanted to get explainable results.
+%Running tests with 0
+%sin 0 8.89287
+%log 0 22.2584
+%exp 0 11.1266
+%oneover 0 6.25691
+%squared 0 1.61234
+%Running tests with 0.9
+%sin 0.9 32.2468
+%log 0.9 20.8129
+%exp 0.9 20.6802
+%oneover 0.9 10.3679
+%squared 0.9 1.50901
+%Running tests with 1.1
+%sin 1.1 32.593
+%log 1.1 20.948
+%exp 1.1 23.1887
+%oneover 1.1 10.4601
+%squared 1.1 1.61984
+%Running tests with 4.12345
+%sin 4.12345 30.6983
+%log 4.12345 25.9272
+%exp 4.12345 23.4752
+%oneover 4.12345 10.6315
+%squared 4.12345 1.63883
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{l||r|r|r|r|r}
+        \textbf{Function} & $x=0$ & $x=0.9$ & $x=1.1$ & $x=4.12345$ \\ \hline
+        $y=\sin(x)$     & $8.89$ & $32.25$& $32.59$& $30.70$ \\
+        $y=\log(x+0.1)$ & $22.26$ & $20.81$ & $20.95$ & $25.93$\\
+        $y=e^x$         & $11.13$ & $20.68$ & $23.19$ & $23.48$\\
+        $y={1\over x+1}$& $6.26$ & $10.36$ & $10.46$ & $10.63$\\
+        $y=x^2$         & $1.61$  & $1.50$  & $1.62$  & $1.64$
+    \end{tabular}
+    \caption{Timings in cycles per mathematical function using \lstinline{-O3 -m64 -march=corei7-avx  -fno-tree-vectorize} with GCC 4.7.2.}
+\end{figure}
+
+\subsection{Observations}
+\begin{itemize}
+    \item $y=\sin(x)$: We observe that we require significantly less cycles for $sin(0)$ than for the different function values of $\neq 0$. The library can make use of the approximation $\sin(\theta)\approx \theta$ for a significantly small theta. 
+    \item $y=\log(x+0.1)$: We don't observe a significant change between the different function values. 
+    \item $y=e^x$: The CPU is able to make use of a direct computation for $x=0$. 
+    \item $y={1\over x+1}$: The CPU is able to identify the special condition ${1\over 1}$.
+    \item $y=x^2$: No change over the different inputs. The cycle count indicates pipelining.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+\subsection{GCC}
+\end{document}

@@ -1,5 +1,16 @@
 #include "main.h"
 
+inline void cos_bench(double * x, double * y, long int n)
+{
+    long int i;
+    
+    #pragma ivdep
+    for(i = 0; i < n; i++) {
+        y[i] = cos(x[i]);
+    }
+    
+}
+
 /*
  * microbench: timing setup
  * x: input vector

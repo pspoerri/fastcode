@@ -1,5 +1,14 @@
 #include "main.h"
 
+inline void squared_bench(double * x, double * y, long int n)
+{
+    long int i;
+    #pragma ivdep
+    for(i = 0; i < n; i++) {
+        y[i] = x[i]*x[i];
+    }
+    
+}
 /*
  * microbench: timing setup
  * x: input vector

@@ -1,5 +1,15 @@
 #include "main.h"
 
+inline void oneover_bench(double * x, double * y, long int n)
+{
+    long int i;
+    #pragma ivdep
+    for(i = 0; i < n; i++) {
+        y[i] = 1.0/(x[i]+1.0);
+    }
+    
+}
+
 /*
  * microbench: timing setup
  * x: input vector

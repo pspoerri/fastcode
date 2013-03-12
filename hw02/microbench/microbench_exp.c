@@ -1,5 +1,15 @@
 #include "main.h"
 
+inline void exp_bench(double * x, double * y, long int n)
+{
+    long int i;
+    #pragma ivdep
+    for(i = 0; i < n; i++) {
+        y[i] = exp(x[i]);
+    }
+    
+}
+
 /*
  * microbench: timing setup
  * x: input vector

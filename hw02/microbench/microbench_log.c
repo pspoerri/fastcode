@@ -1,5 +1,14 @@
 #include "main.h"
 
+inline void log_bench(double * x, double * y, long int n)
+{
+    long int i;
+    #pragma ivdep
+    for(i = 0; i < n; i++) {
+        y[i] = log(x[i]+0.1);
+    }
+    
+}
 /*
  * microbench: timing setup
  * x: input vector

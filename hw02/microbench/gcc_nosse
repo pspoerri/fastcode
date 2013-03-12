@@ -1,0 +1,24 @@
+Running tests with 0
+sin 0 8.98888
+log 0 23.0994
+exp 0 11.5412
+oneover 0 6.29134
+squared 0 1.50268
+Running tests with 0.9
+sin 0.9 31.4646
+log 0.9 19.727
+exp 0.9 22.1517
+oneover 0.9 10.3683
+squared 0.9 1.59206
+Running tests with 1.1
+sin 1.1 32.9045
+log 1.1 20.003
+exp 1.1 22.4795
+oneover 1.1 10.4724
+squared 1.1 1.60688
+Running tests with 4.12345
+sin 4.12345 31.6927
+log 4.12345 22.7279
+exp 4.12345 23.3173
+oneover 4.12345 10.3592
+squared 4.12345 1.693
