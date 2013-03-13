@@ -248,13 +248,129 @@ We benchmarked our code with the following flags enabled: \lstinline{-O3 -m64 -m
     \item $y=x^2$: No change over the different inputs. The cycle count indicates pipelining.
 \end{itemize}
 
+\section{Optimization Blockers}
+We were able to improve the performance of the code from 81 MFLOPs (size: 300) to 7.3 GFLOPs (size: 300). 
+\paragraph*{System Setup:}
+\begin{description}
+    \item[Compiler:] gcc-4.7 (GCC) 4.7.2
+    \item[Assembler:] Apple clang version 4.1 (tags/Apple/clang-421.11.66) (based on LLVM 3.1svn)
+    \item[Compiler Options:] \lstinline{-m64 -march=corei7-avx -fno-tree-vectorize -O3}
+    \item[Operating System:] Mac OSX 10.8.2
+    \item[CPU:] Intel(R) Core(TM) i7-3720QM CPU @ 2.60GHz
+\end{description}
+\lstset{language=C}
+\begin{lstlisting}{caption=Improved code}
+void v10_inner_loop_unrolling(smat_t *a)
+{
+    int i, j;
+    double x1,x2,y1,y2;
+    double sum1, sum2;
+
+    double *mat = a->mat;
+
+    int n = a->n;
+    int factor = 1;
+    for(i = 0; i < n; i=i+2)        
+    {   
+        double cosp = cos(i)+1;
+        double sinp = sin(factor*i);
+        factor = -factor;
+        
+        int p = i+1;        
+        for(j = 0; j < n; j=j+2)
+        {        
+            x1 = mat[i * n + j];
+            y1 = mat[i * n + j+1]; 
+            x2 = mat[p * n + j];
+            y2 = mat[p * n + j+1];
+
+            mat[i * n + j] = cosp * x1 + sinp * x2;
+            mat[i * n + j+1] = cosp * y1 + sinp * y2;
+            mat[p * n + j] = cosp * x2 - sinp * x1;      
+            mat[p * n + j+1] = cosp * y2 - sinp * y1;  
+        }    
+    }
+}
+
+\end{lstlisting}
+Benchmarks:
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{r|rrr|}
+        \multirow{2}{*}{\textbf{Optimizations}} & \multicolumn{3}{|c|}{\textbf{Optimized Compile Flags}}\\ 
+                               & Size: $300$     & Size: $600$    & Average \\ \hline
+        Original Function & $81$ MFlops & $75$ MFlops & $78$ MFLOPs \\
+        Localized Loop Variables & $67$ MFlops & $66$ MFlops & $67$ MFLOPs \\
+        Inlineing f      & $76$ MFlops & $75$ MFlops & $75$ MFLOPs \\
+        Replace Inner Functions & $76$ MFlops & $73$ MFlops & $75$ MFLOPs \\
+        Reorder Inner Loops & $80$ MFlops & $82$ MFlops & $81$ MFLOPs \\
+        Reorder cos and sin & $283$ MFlops & $270$ MFlops & $277$ MFLOPs \\
+        Move x1 and x2 into sum & $399$ MFlops & $417$ MFlops & $407$ MFLOPs \\
+        Restructure operations  & $419$ MFlops & $395$ MFlops & $407$ MFLOPs \\
+        Inline get and set & $2554$ MFlops & $2631$ MFlops & $2592$ MFLOPs \\
+        Replace $x1+cosp*x1$ & $2847$ MFlops & $4446$ MFlops & $3647$ MFLOPs \\
+        Unroll inner loop & $7344$ MFlops & $3912$ MFlops & $5628$ MFLOPs \\
+    \end{tabular}
+
+\end{figure}
+
+
+%superslow: original function:
+%Size 300: 81.417 MFLOPs
+%Size 600: 74.898 MFLOPs
+%Average: 78.157 MFLOPs
+%
+%v1_localized_variables: Localized Loop variables:
+%Size 300: 66.756 MFLOPs
+%Size 600: 66.437 MFLOPs
+%Average: 66.597 MFLOPs
+%
+%v2_inline_f: Inline f:
+%Size 300: 75.644 MFLOPs
+%Size 600: 75.179 MFLOPs
+%Average: 75.411 MFLOPs
+%
+%v3_replace_inner_functions: Replace Inner functions:
+%Size 300: 76.480 MFLOPs
+%Size 600: 72.744 MFLOPs
+%Average: 74.612 MFLOPs
+%
+%v4_reorder_inner_loop: Reorder Inner Loops:
+%Size 300: 79.515 MFLOPs
+%Size 600: 82.002 MFLOPs
+%Average: 80.759 MFLOPs
+%
+%v5_reorder_computations: Reorder COS and SIN:
+%Size 300: 283.108 MFLOPs
+%Size 600: 270.230 MFLOPs
+%Average: 276.669 MFLOPs
+%
+%v6_reorder_variables: Move x1 and x2 into sum:
+%Size 300: 398.888 MFLOPs
+%Size 600: 417.012 MFLOPs
+%Average: 407.950 MFLOPs
+%
+%v7_restructure_cos_sin: Restructure cos and sin and remove modulo operation:
+%Size 300: 418.819 MFLOPs
+%Size 600: 395.329 MFLOPs
+%Average: 407.074 MFLOPs
+%
+%v8_inline_get_and_set: Inline get and set functions:
+%Size 300: 2554.097 MFLOPs
+%Size 600: 2631.290 MFLOPs
+%Average: 2592.694 MFLOPs
+%
+%v9_remove_add_op_cos: Replace x1+cosp*x1 with x1*(cosp+1):
+%Size 300: 2847.200 MFLOPs
+%Size 600: 4445.817 MFLOPs
+%Average: 3646.508 MFLOPs
+%
+%v10_inner_loop_unrolling: Unroll inner loop:
+%Size 300: 7343.941 MFLOPs
+%Size 600: 3912.193 MFLOPs
+%Average: 5628.067 MFLOPs
 
 
 
 
-
-
-
-
-\subsection{GCC}
 \end{document}
