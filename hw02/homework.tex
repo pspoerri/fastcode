@@ -228,7 +228,7 @@ We benchmarked our code with the following flags enabled: \lstinline{-O3 -m64 -m
 %squared 4.12345 1.63883
 \begin{figure}[H]
     \centering
-    \begin{tabular}{l||r|r|r|r|r}
+    \begin{tabular}{l|r|r|r|r}
         \textbf{Function} & $x=0$ & $x=0.9$ & $x=1.1$ & $x=4.12345$ \\ \hline
         $y=\sin(x)$     & $8.89$ & $32.25$& $32.59$& $30.70$ \\
         $y=\log(x+0.1)$ & $22.26$ & $20.81$ & $20.95$ & $25.93$\\
@@ -484,6 +484,45 @@ We observed that the function "Unroll inner loop" (listing: \ref{v10_inner_loop_
 
 We also observe that the first $4$ optimisations didn't increase the performance of the code. In combination with the other optimisations especially the Inlining of the \lstinline{get} \lstinline{set} operations gave the highest performance increase.
 
+\section{Locality of Matrix Transpositions}
+In this exercise we investigate the locality of a Matrix Transposition in the form provided in listing \ref{code:matrix}.
+\begin{lstlisting}[caption=Matrix transpose code,label=code:matrix]
+double A[M][N], B[N][M];
+
+for (int i=0; i < M; i++) {
+    for (int j=0; j < N; j++) {
+        B[j][i] = A[i][j];
+    }
+}
+\end{lstlisting}
+
+\begin{description}
+    \item[Matrix $\mathbf{A}$:] Array accesses on $\mathbf{A}$ have spatial but no temporal locality. Since every element is only read once.
+    \item[Matrix $\mathbf{B}$:] Array accesses on $\mathbf{B}$ have neither spatial nor temporal locality.\end{description}
+
+\section{Locality of a Triangular Solver}
+For this exercise we consider a solver for a triangular system of equations $Lx=b$, where $L$ is a lower triangular matrix of size $N\times N$. $b$ and $x$ are vectors of size $N$. The code is provided in listing \ref{code_solver}.
+
+\begin{lstlisting}[caption=Code for a Triangular Solver,label=code_solver]
+double L[N][N], b[N];
+
+for (int i=0; i < N-1; i++) {
+    b[i] = b[i]/L[i][i];
+    for (int j = i+1; j < N; j++) {
+        b[j] -= b[i]*L[j][i];
+    }
+}
+b[N-1] = b[N-1]/L[N-1][N-1];
+\end{lstlisting}
+
+\begin{description}
+    \item[Matrix $\mathbf{L}$:] Accesses on $\mathbf{L}$ have neither spatial nor temporal locality. Since we read the data columnwise.
+    \item[Vector $\mathbf{b}$:] Accesses on $\mathbf{b}$ have spatial and temporal locality:
+        \begin{itemize}
+            \item Accesses on $b[i]$ are temporal.
+            \item Accesses on $b[j]$ are spatial.
+        \end{itemize}
+\end{description}
 
 
 \end{document}
