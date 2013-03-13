@@ -249,17 +249,34 @@ We benchmarked our code with the following flags enabled: \lstinline{-O3 -m64 -m
 \end{itemize}
 
 \section{Optimization Blockers}
-We were able to improve the performance of the code from 81 MFLOPs (size: 300) to 7.3 GFLOPs (size: 300). 
-\paragraph*{System Setup:}
-\begin{description}
-    \item[Compiler:] gcc-4.7 (GCC) 4.7.2
-    \item[Assembler:] Apple clang version 4.1 (tags/Apple/clang-421.11.66) (based on LLVM 3.1svn)
-    \item[Compiler Options:] \lstinline{-m64 -march=corei7-avx -fno-tree-vectorize -O3}
-    \item[Operating System:] Mac OSX 10.8.2
-    \item[CPU:] Intel(R) Core(TM) i7-3720QM CPU @ 2.60GHz
-\end{description}
+\subsection{Code Variants}
+\subsubsection{Original Code}
+The original code performed quite poorly. This is mainly due to multiple function calls and pointer references.
+\subsubsection{Localized Loop Variables}
+As a first step we have localized the loop variable n to avoid a memory lookup for each iteration.
+\subsubsection{Inlining f}
+Since the \lstinline{f} function was only accessed once per loop iteration we inlined the function to get a better overview over the code. 
+\subsubsection{Replacing the inner Functions}
+We removed the array from the inner loop.
+\subsubsection{Reordering the inner Loops}
+Looking at the code of the \lstinline{get_elt} and \lstinline{set_elt} function we noticed that
+the memory accesses were not coalesced. We therefore switched the loop ordering between the inner and outer loop.
+\subsubsection{Reordering cos and sin Functions}
+We move the computation of the \lstinline{sin} and \lstinline{cos} functions to the outer loop since they need to be computed only once per outer loop iteration.
+\subsubsection{Moving x1 and x2 into the sum}
+We replaced the memory accesses in the \lstinline{sum1} and \lstinline{sum2} with the already computed values \lstinline{x1} and \lstinline{x2}.
+\subsubsection{Restructuring operations}
+Using the fact that $\cos(x) = \cos(-x)$.
+We restructured the \lstinline{sin} and \lstinline{cos} computations such that the computations use less operations. 
+\subsubsection{Inlining get and set}
+Since we can safely assume that our code is correct we inlined the get and set operations of the matrix. Therefore removing the bound checks from the code.
+\subsubsection{Replace \texttt{x1 + cosp * x1}}
+We replaced the computation of \lstinline{x1 + cosp * x1} with \lstinline{(cosp + 1) * x1} and added the \lstinline{+1} to the outer loop.
+\subsubsection{Unroll inner loop}
+In order to get coalesced memory accesses we unrolled the inner loop. The code is provided in listing \ref{v10_inner_loop_unrolling}.
+
 \lstset{language=C}
-\begin{lstlisting}{caption=Improved code}
+\begin{lstlisting}[caption=Improved code,label=v10_inner_loop_unrolling]
 void v10_inner_loop_unrolling(smat_t *a)
 {
     int i, j;
@@ -291,85 +308,181 @@ void v10_inner_loop_unrolling(smat_t *a)
         }    
     }
 }
-
 \end{lstlisting}
-Benchmarks:
-\begin{figure}[H]
-    \centering
-    \begin{tabular}{r|rrr|}
-        \multirow{2}{*}{\textbf{Optimizations}} & \multicolumn{3}{|c|}{\textbf{Optimized Compile Flags}}\\ 
-                               & Size: $300$     & Size: $600$    & Average \\ \hline
-        Original Function & $81$ MFlops & $75$ MFlops & $78$ MFLOPs \\
-        Localized Loop Variables & $67$ MFlops & $66$ MFlops & $67$ MFLOPs \\
-        Inlineing f      & $76$ MFlops & $75$ MFlops & $75$ MFLOPs \\
-        Replace Inner Functions & $76$ MFlops & $73$ MFlops & $75$ MFLOPs \\
-        Reorder Inner Loops & $80$ MFlops & $82$ MFlops & $81$ MFLOPs \\
-        Reorder cos and sin & $283$ MFlops & $270$ MFlops & $277$ MFLOPs \\
-        Move x1 and x2 into sum & $399$ MFlops & $417$ MFlops & $407$ MFLOPs \\
-        Restructure operations  & $419$ MFlops & $395$ MFlops & $407$ MFLOPs \\
-        Inline get and set & $2554$ MFlops & $2631$ MFlops & $2592$ MFLOPs \\
-        Replace $x1+cosp*x1$ & $2847$ MFlops & $4446$ MFlops & $3647$ MFLOPs \\
-        Unroll inner loop & $7344$ MFlops & $3912$ MFlops & $5628$ MFLOPs \\
-    \end{tabular}
 
-\end{figure}
-
-
+\subsection{Benchmarking}
+Due to benchmarking problems I decided to use a Linux operating system for benchmarking.
+We were able to improve the performance of the code from 74 MFLOPs (average) to 3.3 GFLOPs (average) getting a speedup of $44x$. 
+\paragraph*{System Setup:}
+\begin{description}
+    \item[Compiler:] gcc (Ubuntu/Linaro 4.6.3-1ubuntu5) 4.6.3
+    \item[Compiler Options:] The two different compiler options that were used to test the code.
+        \begin{itemize}
+            \item Optimized Compile Flags: \lstinline{-m64 -march=corei7-avx -fno-tree-vectorize -O3}
+            \item Optimizations Disabled: \lstinline{-m64 -O0}     
+        \end{itemize}
+    \item[Operating System:] Ubuntu 12.04
+    \item[CPU:] Intel(R) Core(TM) i5-3570K CPU @ 3.40GHz
+\end{description}
+%%%% -m64 -march=corei7-avx -fno-tree-vectorize -O3
 %superslow: original function:
-%Size 300: 81.417 MFLOPs
-%Size 600: 74.898 MFLOPs
-%Average: 78.157 MFLOPs
+%Size 300: 76.918 MFLOPs
+%Size 600: 71.995 MFLOPs
+%Average: 74.457 MFLOPs
 %
 %v1_localized_variables: Localized Loop variables:
-%Size 300: 66.756 MFLOPs
-%Size 600: 66.437 MFLOPs
-%Average: 66.597 MFLOPs
+%Size 300: 74.995 MFLOPs
+%Size 600: 69.494 MFLOPs
+%Average: 72.245 MFLOPs
 %
 %v2_inline_f: Inline f:
-%Size 300: 75.644 MFLOPs
-%Size 600: 75.179 MFLOPs
-%Average: 75.411 MFLOPs
+%Size 300: 76.266 MFLOPs
+%Size 600: 69.226 MFLOPs
+%Average: 72.746 MFLOPs
 %
 %v3_replace_inner_functions: Replace Inner functions:
-%Size 300: 76.480 MFLOPs
-%Size 600: 72.744 MFLOPs
-%Average: 74.612 MFLOPs
+%Size 300: 76.266 MFLOPs
+%Size 600: 69.763 MFLOPs
+%Average: 73.015 MFLOPs
 %
+
 %v4_reorder_inner_loop: Reorder Inner Loops:
-%Size 300: 79.515 MFLOPs
-%Size 600: 82.002 MFLOPs
-%Average: 80.759 MFLOPs
+%Size 300: 82.564 MFLOPs
+%Size 600: 82.187 MFLOPs
+%Average: 82.375 MFLOPs
 %
 %v5_reorder_computations: Reorder COS and SIN:
-%Size 300: 283.108 MFLOPs
-%Size 600: 270.230 MFLOPs
-%Average: 276.669 MFLOPs
+%Size 300: 346.131 MFLOPs
+%Size 600: 339.600 MFLOPs
+%Average: 342.865 MFLOPs
 %
 %v6_reorder_variables: Move x1 and x2 into sum:
-%Size 300: 398.888 MFLOPs
-%Size 600: 417.012 MFLOPs
-%Average: 407.950 MFLOPs
+%Size 300: 499.965 MFLOPs
+%Size 600: 499.969 MFLOPs
+%Average: 499.967 MFLOPs
 %
 %v7_restructure_cos_sin: Restructure cos and sin and remove modulo operation:
-%Size 300: 418.819 MFLOPs
-%Size 600: 395.329 MFLOPs
-%Average: 407.074 MFLOPs
+%Size 300: 473.653 MFLOPs
+%Size 600: 499.969 MFLOPs
+%Average: 486.811 MFLOPs
 %
+
 %v8_inline_get_and_set: Inline get and set functions:
-%Size 300: 2554.097 MFLOPs
-%Size 600: 2631.290 MFLOPs
-%Average: 2592.694 MFLOPs
+%Size 300: 2249.859 MFLOPs
+%Size 600: 2571.245 MFLOPs
+%Average: 2410.552 MFLOPs
 %
+
 %v9_remove_add_op_cos: Replace x1+cosp*x1 with x1*(cosp+1):
-%Size 300: 2847.200 MFLOPs
-%Size 600: 4445.817 MFLOPs
-%Average: 3646.508 MFLOPs
+%Size 300: 2249.859 MFLOPs
+%Size 600: 3599.640 MFLOPs
+%Average: 2924.750 MFLOPs
 %
 %v10_inner_loop_unrolling: Unroll inner loop:
-%Size 300: 7343.941 MFLOPs
-%Size 600: 3912.193 MFLOPs
-%Average: 5628.067 MFLOPs
+%Size 300: 2999.750 MFLOPs
+%Size 600: 3599.640 MFLOPs
+%Average: 3299.695 MFLOPs
+%
+%Best: v10_inner_loop_unrolling: Unroll inner loop
+%Perf: 3299.695 MFLOPs
+%%%%% -00
+%superslow: original function:
+%Size 300: 29.603 MFLOPs
+%Size 600: 27.776 MFLOPs
+%Average: 28.690 MFLOPs
+%
+%v1_localized_variables: Localized Loop variables:
+%Size 300: 29.799 MFLOPs
+%Size 600: 28.167 MFLOPs
+%Average: 28.983 MFLOPs
+%
+%v2_inline_f: Inline f:
+%Size 300: 29.506 MFLOPs
+%Size 600: 27.648 MFLOPs
+%Average: 28.577 MFLOPs
+%
+%v3_replace_inner_functions: Replace Inner functions:
+%Size 300: 46.389 MFLOPs
+%Size 600: 42.957 MFLOPs
+%Average: 44.673 MFLOPs
+%
+%v4_reorder_inner_loop: Reorder Inner Loops:
+%Size 300: 49.177 MFLOPs
+%Size 600: 49.177 MFLOPs
+%Average: 49.177 MFLOPs
+%
+%v5_reorder_computations: Reorder COS and SIN:
+%Size 300: 119.992 MFLOPs
+%Size 600: 121.614 MFLOPs
+%Average: 120.803 MFLOPs
+%
+%v6_reorder_variables: Move x1 and x2 into sum:
+%Size 300: 152.533 MFLOPs
+%Size 600: 156.512 MFLOPs
+%Average: 154.522 MFLOPs
+%
+%v7_restructure_cos_sin: Restructure cos and sin and remove modulo operation:
+%Size 300: 152.533 MFLOPs
+%Size 600: 156.512 MFLOPs
+%Average: 154.522 MFLOPs
+%
+%v8_inline_get_and_set: Inline get and set functions:
+%Size 300: 473.653 MFLOPs
+%Size 600: 514.253 MFLOPs
+%Average: 493.953 MFLOPs
+%
+%v9_remove_add_op_cos: Replace x1+cosp*x1 with x1*(cosp+1):
+%Size 300: 692.254 MFLOPs
+%Size 600: 692.261 MFLOPs
+%Average: 692.258 MFLOPs
+%
+%v10_inner_loop_unrolling: Unroll inner loop:
+%Size 300: 692.254 MFLOPs
+%Size 600: 749.953 MFLOPs
+%Average: 721.104 MFLOPs
+%
+%Best: v10_inner_loop_unrolling: Unroll inner loop
+%Perf: 721.104 MFLOPs
 
+We run the code with the two different compile flags on the setup above:
+\begin{figure}[H]
+    \hspace{-20mm}
+    {\small
+    \centering
+    \begin{tabular}{r|rrr|rrr}
+        \multirow{2}{*}{\textbf{Optimizations}} & \multicolumn{3}{c}{\textbf{Optimized Compile Flags}}
+            & \multicolumn{3}{|c}{\textbf{Optimizations Disabled}} \\ 
+                               & Size: $300$     & Size: $600$    & \textbf{Average}
+                               & Size: $300$     & Size: $600$    & \textbf{Average}  \\ \hline
+        Original Function & $77$ MFlops & $72$ MFlops & $\mathbf{74}$ \textbf{MFLOPs} 
+           & $29$ MFlops & $28$ MFlops & $\mathbf{28}$ \textbf{MFLOPs}\\
+        Localized Loop Variables & $75$ MFlops & $69$ MFlops & $\mathbf{72}$ \textbf{MFLOPs}            
+           & $30$ MFlops & $28$ MFlops & $\mathbf{29}$ \textbf{MFLOPs}\\
+        Inlineing f      & $76$ MFlops & $69$ MFlops & $\mathbf{73}$ \textbf{MFLOPs}
+           & $29$ MFlops & $28$ MFlops & $\mathbf{29}$ \textbf{MFLOPs}\\
+        Replace Inner Functions & $76$ MFlops & $69$ MFlops & $\mathbf{73}$ \textbf{MFLOPs} 
+           & $46$ MFlops & $43$ MFlops & $\mathbf{45}$ \textbf{MFLOPs}\\
+        Reorder Inner Loops & $83$ MFlops & $82$ MFlops & $\mathbf{82}$ \textbf{MFLOPs}
+           & $49$ MFlops & $49$ MFlops & $\mathbf{49}$ \textbf{MFLOPs}\\
+        Reorder cos and sin & $346$ MFlops & $340$ MFlops & $\mathbf{343}$ \textbf{MFLOPs}
+           & $120$ MFlops & $122$ MFlops & $\mathbf{121}$ \textbf{MFLOPs}\\
+        Move x1 and x2 into sum & $500$ MFlops & $500$ MFlops & $\mathbf{500}$ \textbf{MFLOPs}
+           & $153$ MFlops & $157$ MFlops & $\mathbf{155}$ \textbf{MFLOPs}\\
+        Restructure operations  & $474$ MFlops & $500$ MFlops & $\mathbf{487}$ \textbf{MFLOPs} 
+           & $153$ MFlops & $155$ MFlops & $\mathbf{154}$ \textbf{MFLOPs}\\
+        Inline get and set & $2250$ MFlops & $2571$ MFlops & $\mathbf{2411}$ \textbf{MFLOPs} 
+           & $500$ MFlops & $500$ MFlops & $\mathbf{500}$ \textbf{MFLOPs}\\
+        Replace $x1+cosp*x1$ & $2250$ MFlops & $3600$ MFlops & $\mathbf{2925}$ \textbf{MFLOPs}
+           & $692$ MFlops & $667$ MFlops & $\mathbf{679}$ \textbf{MFLOPs}\\
+        Unroll inner loop & $3000$ MFlops & $3600$ MFlops & $\mathbf{3300}$ \textbf{MFLOPs} 
+           & $750$ MFlops & $750$ MFlops & $\mathbf{750}$ \textbf{MFLOPs}\\
+    \end{tabular}
+    }
+    \caption{Timings chart for the optimization blockers exercise.}
+\end{figure}
+We observed that the function "Unroll inner loop" (listing: \ref{v10_inner_loop_unrolling}) showed the best performance for both the unoptimized and the optimized compiler flags. We also noticed increased performance between the two different input sizes: $n=300$ and $n=600$. We believe this results from a better caching behaviour from my code with large matrices.
+
+We also observe that the first $4$ optimisations didn't increase the performance of the code. In combination with the other optimisations especially the Inlining of the \lstinline{get} \lstinline{set} operations gave the highest performance increase.
 
 
 
