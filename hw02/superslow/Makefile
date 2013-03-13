@@ -14,7 +14,8 @@ smat.o: smat.h smat.c
 	$(CC) -c $(CFLAGS) -o smat.o smat.c
 
 comp.d: comp.o
-	objdump -d comp.o > comp.d
+	otool -tV comp.o > comp.d
+#	objdump -d comp.o > comp.d
 
 comp.o: smat.h comp.h comp.c
 	$(CC) -c $(CFLAGS) -o comp.o comp.c

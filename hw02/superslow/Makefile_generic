@@ -1,4 +1,4 @@
-CC     = gcc
+CC     = gcc-4.7
 # GCC architecture flags
 AFLAGS = -m64 -march=corei7-avx -fno-tree-vectorize
 # GCC debugging flags
