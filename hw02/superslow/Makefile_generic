@@ -1,0 +1,7 @@
+CC     = gcc
+# GCC architecture flags
+AFLAGS = -m64 -march=corei7-avx -fno-tree-vectorize
+# GCC debugging flags
+DFLAGS = -g -Wall
+CFLAGS = -O3 $(AFLAGS) $(DFLAGS)
+LIBS   = -lm
