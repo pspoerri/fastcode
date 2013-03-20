@@ -1,0 +1,325 @@
+\documentclass[portrait,a4paper]{article}
+
+
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+
+
+\usepackage{mathtools}
+\usepackage{amssymb,amsfonts,amsmath}
+\usepackage[e]{esvect}
+
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\newcommand{\algorithmlabel}[2]{{
+    \renewcommand{\algorithmicensure}{\textbf{#1}:}
+    \ENSURE{#2~}
+}}
+
+\usepackage{graphicx}
+\usepackage[svgnames]{xcolor}
+
+\usepackage{geometry}
+\geometry{a4paper}
+
+% multirow and multicol
+\usepackage{multirow}
+\usepackage{multicol}
+\columnsep24pt
+\columnseprule0.1pt
+
+% enumerate
+\renewcommand\theenumi{\arabic{enumi}}
+\renewcommand\labelenumi{\theenumi.}
+\renewcommand\theenumii{\roman{enumii}}
+\renewcommand\labelenumii{\theenumii)}
+
+\usepackage{listings}
+\lstset{
+    floatplacement={tbp},
+    basicstyle=\ttfamily\mdseries,
+    identifierstyle=,
+    stringstyle=\color{gray},
+    numbers=left,
+    numbersep=5pt,
+    inputencoding=utf8x,
+    xleftmargin=8pt,
+    xrightmargin=8pt,
+    keywordstyle=[1]\bfseries,
+    keywordstyle=[2]\bfseries,
+    keywordstyle=[3]\bfseries,
+    keywordstyle=[4]\bfseries,
+    numberstyle=\tiny,
+    stepnumber=1,
+    breaklines=true,
+    frame=lines,
+    showstringspaces=false,
+    tabsize=2,
+    commentstyle=\color{gray},
+    captionpos=b,
+    float=float,
+    language={Java}
+}
+\newcommand{\code}[1]{\lstinline{#1}}
+
+% hyperref
+\usepackage[colorlinks=true,pdfborder={0 0 0},citecolor=DarkGreen,linkcolor=DarkBlue,urlcolor=DarkBlue]{hyperref}
+
+% depth of section numbering
+\setcounter{secnumdepth}{4}
+
+% redefine the \paragraph command:
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{0mm}%
+    {-\baselineskip}%
+    {0.5\baselineskip}%
+    {\normalfont\bfseries}%
+}%
+\makeatother
+
+% new chapter command
+\newcommand{\newchapter}{\clearpage\pagebreak}
+
+% theorems
+\usepackage{amsthm}
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{remark}{Remark}[section]
+\newtheorem{observation}{Observation}[section]
+\newtheorem{assumption}{Assumption}[section]
+\newtheorem{proposition}{Proposition}[section]
+
+% autoref names
+\newcommand{\specialref}[2]{\hyperref[#1]{#2~\ref*{#1}}}
+\def\lstlistingautorefname{Listing}
+\def\subsubsectionautorefname{Section}
+\def\subsectionautorefname{Section}
+\def\figureautorefname{Figure}
+
+% parindent
+\parindent0px
+\parskip3pt
+
+% redefine greek letters
+\renewcommand{\phi}{\varphi}
+\renewcommand{\epsilon}{\varepsilon}
+
+% shortcuts in math mode
+% \newcommand{\bs}{\boldsymbol}
+\newcommand{\mc}{\mathcal}
+\newcommand{\ds}{\displaystyle}
+\DeclarePairedDelimiter\absimpl{\lvert}{\rvert}
+\DeclarePairedDelimiter\normimpl{\lVert}{\rVert}
+\newcommand{\abs}[1]{\absimpl*{#1}}
+\newcommand{\norm}[1]{\normimpl*{#1}}
+\newcommand{\argmax}{\operatorname*{arg\,max}}
+\newcommand{\argmin}{\operatorname*{arg\,min}}
+
+% number sets
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\powerset}{\mathcal P}
+
+% probabilities
+\newcommand{\Prob}[1]{\operatorname{Pr}\left[#1\right]}
+\newcommand{\Ex}[1]{\mathbb{E}\left[#1\right]}
+
+% misc
+\newcommand{\bigO}[1]{\mc O\left(#1\right)} % big-o notation
+
+\newcommand{\nop}[1]{} % temporarily remove from output
+
+
+
+
+% todo
+\usepackage{framed}
+\newenvironment{todo}
+{\color{DarkRed} \begin{leftbar}}
+{\end{leftbar}}
+\newcommand{\inlinetodo}[1]{{\textcolor{DarkRed}{ [\textbf{TODO}: #1]}}}
+\newcommand{\mat}[1]{\bs{#1}}
+\newcommand{\ma}{\mat{A}}
+\newcommand{\mb}{\mat{B}}
+\newcommand{\mx}{\mat{X}}
+\newcommand{\mv}{\mat{V}}
+\newcommand{\muu}{\mat{U}}
+\newcommand{\md}{\mat{D}}
+\newcommand{\ms}{\mat{S}}
+\newcommand{\mz}{\mat{Z}}
+
+\newcommand{\vx}{\mat{x}}
+\newcommand{\va}{\mat{a}}
+\newcommand{\vb}{\mat{b}}
+\newcommand{\vu}{\mat{u}}
+\newcommand{\vz}{\mat{z}}
+
+\newcommand{\rd}{\R^D}
+\newcommand{\rr}[2]{\R^{#1 \times #2}}
+
+\usepackage{placeins}
+
+\newcommand*{\titleSW}[3]{\begingroup% Story of Writing
+\raggedleft
+\vspace*{\baselineskip}
+{\Huge\textbf{#1}}\\[0.7\baselineskip]
+{\large\textbf{#2}}\\[0.5\baselineskip]
+{\small #3}\par
+\endgroup}
+
+\begin{document}
+
+ \author{Pascal Spörri\\pascal@spoerri.io}
+ \title{HOWTO WRITE FAST NUMERICAL CODE\\ EXERCISE 3}
+ \date{\today}
+\maketitle
+
+\section{Cache Mechanics}
+Running the code yields in the following memory acceses:
+
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{r|cc}
+    \textbf{Iteration} & \multicolumn{2}{c}{\textbf{Memory Location}}\\
+        $i$ & $x[2*i\%5]$ & $y[2*i\%5]$ \\ \hline
+        $0$ & $x[0]$ & $y[0]$\\
+        $1$ & $x[2]$ & $y[2]$\\
+        $2$ & $x[4]$ & $y[4]$\\
+        $3$ & $x[1]$ & $y[1]$\\
+        $4$ & $x[3]$ & $y[3]$\\
+        $5$ & $x[0]$ & $y[0]$\\
+        $6$ & $x[2]$ & $y[2]$\\
+        $7$ & $x[4]$ & $y[4]$\\
+        $8$ & $x[1]$ & $y[1]$\\
+        $9$ & $x[3]$ & $y[3]$\\
+    \end{tabular}
+    \caption{Memory locations accessed per iteration}
+\end{figure}
+
+The cache for each loop iteratio is represented here:
+
+\begin{figure}[H]
+%\centering
+\hspace{-20mm}
+{\small
+\begin{tabular}{r|c|c|c|c|c|c|c|c|c|c|c}
+\textbf{Cache Line} & \multicolumn{11}{c}{\textbf{Iteration}}\\
+16 Byte Blocks & \textbf{Init} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} \\ \hline
+0 & - & x[0]x[1]& x[0]x[1] & y[4]y[5] & x[0]x[1] & x[0]x[1] & x[0]x[1] & x[0]x[1] & y[4]y[5] & x[0]x[1] & x[0]x[1]   \\
+1 & - & -       & x[2]x[3] & x[2]x[3] & x[2]x[3] & x[2]x[3] & x[2]x[3] & x[2]x[3] & x[2]x[3] & x[2]x[3] & x[2]x[3]  \\
+2 & - & y[0]y[1]& y[0]y[1] & x[4]x[5] & y[0]y[1] & y[0]y[1] & y[0]y[1] & y[0]y[1] & x[4]x[5] & y[0]y[1] & y[0]y[1] \\
+3 & - & -       & y[2]y[3] & y[2]y[3] & y[2]y[3] & x[2]x[3] & y[2]x[3] & y[2]y[3] & y[2]y[3] & y[2]y[3] & y[2]y[3] \\
+\end{tabular}
+}
+%\centering
+\caption{Cache content for each iteration step}
+\end{figure}
+\subsection{Hit/Miss Sequences}
+Based on the cache analysis we are able to determine the miss/hit sequences:
+\begin{description}
+\item[x:]MMMMHHHMMH
+\item[y:]MMMMHHHMMH
+\end{description}
+
+\subsection{Miss rate for the individual arrays}
+Both arrays have the same miss rate:
+\begin{description}
+\item[x:] ${6\over 10}$
+\item[y:] ${6\over 10}$
+\end{description}
+
+\subsection{Operational Intensity}
+\begin{description}
+\item[Flops:] For each iteration we observe $2$ floating point operations. Which makes $10$ floating point operations for the total run of the program.
+\item[Bytes Transferred:] We observe $6$ cache misses per array per execution. This creates a total of $2\cdot 6\cdot 16 = 192$ bytes transferred into the cache.
+\end{description}
+
+Thus we can conclude that the total operational intensity is:
+\begin{align*}
+I = {\text{Flops} \over \text{Bytes Transferred}} = {10\over 192} \approx 0.05
+\end{align*}
+
+\section{Cache Mechanics}
+For this exercise we evaluate the following code:
+\begin{lstlisting}
+double x[128], sum;
+int i,j;
+for (int i=0; i<64; i++) {
+    j = i+64;
+    sum += x[i]*x[j];
+}
+\end{lstlisting}
+
+\subsection{Case 1}
+\begin{description}
+\item[Cache size: $512$ bytes:]
+    Since the cache has a size of $512$ bytes and a set size of $16$ bytes we observe that there are $32$ sets.
+Both \lstinline{x[i]} and \lstinline{x[j]} will access the set $i\% 2$ and evict themselves on each loop iteration. We can therefore conclude that the miss rate is $100\%$.
+\item[Cache size: $1024$ bytes:] \lstinline{x[i]} will access the set $i\% 2$ and \lstinline{x[j]} will access the set $i\% 2 + 32$ on each iteration step. We can therefore conclude that the miss rate is $50\%$.
+
+\end{description}
+
+\subsection{Case 2}
+\begin{description}
+\item[Cache size: $512$ bytes with $2$ way set associativity] As we have seen before both \lstinline{x[i]} and \lstinline{x[j]} will access the set $i\% 2$. Since we now have $2$ way set associativity the cache lines won't evict each other. We can therefore conclude that the miss rate is $50\%$. 
+\item[Increasing the cache] Increasing the cache won't help in this case since the limiting factor is the size of the set: Every two cycles a new set needs to be loaded which will create a miss. 
+\item[Increasing the cache line] Increasing the cache line and keeping the set associativity will definitely help since the memory accesses won't compete for a cache line. Doubling the cache line size to $32$ bytes will yield a miss rate of $25\% $.
+\end{description}
+
+\section{MMM Analysis}
+
+For this exercise we consider the following code:
+\begin{lstlisting}
+int i, j, k;
+for (i = 0; i < n; i++) {
+    for (j + 0; j < n; j++) {
+        for (k = 0; k < n; k++) {
+            C[i][j] = C[i][j] + A[i][j]*B[k][j];
+        }
+    }
+} 
+\end{lstlisting}
+
+\subsection{Smallest Cache Size needed for MMM}
+We first proceed to describe the minimal space requirements for each matrix:
+\begin{description}
+\item[A] Since we need to access each row of matrix $A$ multiple times, we want to hold the row for the outermost row in the cache. The space requirements for the matrix $A$ are therefore: $n\cdot 8$ bytes.
+\item[B] We need to access each column of matrix $B$ for each innermost loop iteration. To avoid misses we therefore want to keep the entire matrix $B$ in the cache. The space requirements for matrix $B$ are therefore: $n\cdot n \cdot 8$ bytes.
+\item[C] For the matrix $C$ it is sufficient to keep one block in the cache: The accesses are coalesced and the values are reused in each inner loop iteration.
+\end{description}
+For a fixed $n$ we would therefore need a minimal cache size of $(n+n\cdot n)\cdot 8 + B$ bytes.
+
+\subsection{Largest n for 8 MB cache}
+In the $8$ MB cache we can store store $1048576$ doubles (cache line: $8$ doubles).
+The largest $n$ that we can use to avoid compulsory misses is $1023$:
+\begin{itemize}
+    \item We need to use at least $1032$ doubles to store each row of matrix $A$ ($1024$ for the values in the current line $+$ padding since we can't selectively load data and for some cases we need an entire additional block). 
+    \item We need to use one block of $8$ doubles to store the the doubles for matrix $C$. 
+    \item Matrix $B$ needs $1046529$ doubles to store the entire matrix. With block padding this results in $1046536$ doubles stored for matrix $B$.
+\end{itemize}
+
+$1032+ 1046529 + 8= 1047576$ doubles total space needed and thus making a bigger array size impossible (there are only $8000$ bytes to spare).
+
+\subsection{Operational Intensity}
+Since every element is only loaded once we can concluded that the total bytes requested by the program are: $3\cdot n^2 \cdot 8= 3\cdot 1024^2\cdot 8 = 25116696$ bytes. Since only the matrix $C$ is written back to memory the program needs to store $8\cdot n^2 =8\cdot 31^2 = 8372232$ bytes. Thus making the total memory traffic: $4\cdot 8372232 = 33488928$ bytes or $31$ MBytes. 
+
+A run of the program yields $2\cdot n^3$ floating point operations. For the concrete example above this results in a total of $1070599167$ floating point operations. 
+
+From the total memory traffic and the floating point operations we are therefore able to compute the operational intensity for the concrete example:
+\begin{align*}
+    I_{32} = {1070599167\over 8372232} = 127 \left[{\text{Flops} \over \text{Bytes}}\right]
+\end{align*}
+
+\section{Proofreading}
+
+
+
+
+\end{document}
