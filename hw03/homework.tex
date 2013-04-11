@@ -263,7 +263,6 @@ for (int i=0; i<64; i++) {
     Since the cache has a size of $512$ bytes and a set size of $16$ bytes we observe that there are $32$ sets.
 Both \lstinline{x[i]} and \lstinline{x[j]} will access the set $i\% 2$ and evict themselves on each loop iteration. We can therefore conclude that the miss rate is $100\%$.
 \item[Cache size: $1024$ bytes:] \lstinline{x[i]} will access the set $i\% 2$ and \lstinline{x[j]} will access the set $i\% 2 + 32$ on each iteration step. We can therefore conclude that the miss rate is $50\%$.
-
 \end{description}
 
 \subsection{Case 2}
@@ -319,7 +318,11 @@ From the total memory traffic and the floating point operations we are therefore
 
 \section{Proofreading}
 
-
+The computation of the total memory traffic is wrong which results in a wrong computation of the operational intensity. In the exercise we compute the number of misses which corresponds to the number of cache blocks are loaded. 
+For the whole matrix matrix multiplication we load ${1\over 8}(n^3+n^2)$ blocks. Which corresponds to a total memory traffic of ${1\over 8}(n^3+n^2)\cdot 64 = 8(n^3+n^2)$ bytes. We can therefore see that to total operational intensity is:
+\begin{align*}
+I_n \leq {2n^3 \over 8(n^3+n^2)} \approx {1\over 4}  \left[{\text{Flops} \over \text{Bytes}}\right]
+\end{align*}
 
 
 \end{document}

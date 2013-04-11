@@ -516,7 +516,7 @@ for (int i=0; i < N-1; i++) {
 b[N-1] = b[N-1]/L[N-1][N-1];
 \end{lstlisting}
 
-\begin{description}
+\begin{description}\label{bla}
     \item[Matrix $\mathbf{L}$:] Accesses on $\mathbf{L}$ have neither spatial nor temporal locality. Since we read the data columnwise.
     \item[Vector $\mathbf{b}$:] Accesses on $\mathbf{b}$ have spatial and temporal locality:
         \begin{itemize}
@@ -524,6 +524,5 @@ b[N-1] = b[N-1]/L[N-1][N-1];
             \item Accesses on $b[j]$ are spatial.
         \end{itemize}
 \end{description}
-
 
 \end{document}
