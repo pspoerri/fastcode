@@ -2,9 +2,11 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define NUM_RUNS 1
+#define NUM_RUNS 8
 #define CYCLES_REQUIRED 1E8
 #include "rdtsc.h"
+#include "ftimer.h"
+#define CLOCK_SPEED 2600000000
 
 #ifndef NB
 #error NB is not defined
@@ -33,6 +35,34 @@ void initData()
     }
 }
 
+void timebench()
+{
+    int i, num_runs;
+    double sum;
+    double start, tmeas;
+    
+    num_runs = NUM_RUNS;
+    // fill cache
+    for (i = 0; i < num_runs; i++)
+        compute();
+
+    // make measurement
+    init_etime();
+    start = get_etime();
+    for (i = 0; i < num_runs; i++)
+        compute();
+    tmeas = get_etime();
+    tmeas = tmeas-start;
+    
+    double time_run = tmeas/((double) num_runs);
+    double cycles = time_run*((double) CLOCK_SPEED);
+    //sum = 0.0;
+    for (i=0; i<NB*NB; i++)
+    {
+        sum += C[i];
+    }
+    printf("{'block_size': %d, 'time': %f, 'cycles': %f, 'total_sum': %f, 'num_runs': %d }", NB, time_run, cycles, sum, num_runs); 
+}
 
 void microbench()
 {
@@ -107,7 +137,8 @@ int main(){
   }
   
 #ifndef VERIFY
-  microbench();
+//  microbench();
+    timebench();
 #else
   compute();
   verifier();

@@ -4,18 +4,20 @@ import sys
 
 RUN_CONFIGURATION = {"code1.c": range(2, 1502,2), "code2.c": range(2, 1502, 2), "code3.c": range(8, 1508, 8)}
 COMPILE_FLAGS = "-m64 -march=corei7 -fno-tree-vectorize -O3".split(" ")
-COMPILER = "gcc"
+COMPILE_FILES = ["main.c", "ftimer.c"]
+COMPILER = "gcc-4.7"
+
 def total_flops(NB):
     n = float(NB)
     return 2.0*n*n*n + n*n
 
 def verify(SRC, NB):
     command_name = SRC[:-2]
-    compile_args_shell = [COMPILER, "-DNB="+str(NB), "-DVERIFY=1" ]+COMPILE_FLAGS+["-o", command_name, SRC, "main.c"]
+    compile_args_shell = [COMPILER, "-DNB="+str(NB), "-DVERIFY=1" ]+COMPILE_FLAGS+["-o", command_name, SRC]+COMPILE_FILES
     try:
         o = subprocess.check_call(compile_args_shell)
     except:
-        print "Error\n"+o
+        print "Error\n"
         sys.exit(-1);
 
     o = subprocess.check_call(["./"+command_name], shell=True)
@@ -28,7 +30,7 @@ def verify(SRC, NB):
         
 def benchmark(SRC, NB):
     command_name = SRC[:-2]
-    compile_args_shell = [COMPILER, "-DNB="+str(NB) ]+COMPILE_FLAGS+["-o", command_name, SRC, "main.c"]
+    compile_args_shell = [COMPILER, "-DNB="+str(NB) ]+COMPILE_FLAGS+["-o", command_name, SRC]+COMPILE_FILES
 #    print compile_args_shell
     
     try:
