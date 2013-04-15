@@ -2,7 +2,7 @@ import subprocess
 import ast
 import sys
 
-RUN_CONFIGURATION = {"code1.c": range(2, 1502,2)}
+RUN_CONFIGURATION = {"code1.c": range(2, 1502,2), "code2.c": range(2, 1502, 2), "code3.c": range(8, 1508, 8)}
 COMPILE_FLAGS = "-m64 -march=corei7-avx -fno-tree-vectorize -O3".split(" ")
 COMPILER = "gcc-4.7"
 def total_flops(NB):

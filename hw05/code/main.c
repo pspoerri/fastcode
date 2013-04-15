@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define NUM_RUNS 5
+#define NUM_RUNS 2
 #define CYCLES_REQUIRED 1E8
 #include "rdtsc.h"
 
@@ -41,22 +41,29 @@ void microbench()
     tsc_counter start, end;
     
     // limit cycles
-    num_runs = 16;
+    num_runs = NUM_RUNS;
     
 
     CPUID(); RDTSC(start); RDTSC(end);
     CPUID(); RDTSC(start); RDTSC(end);
     CPUID(); RDTSC(start); RDTSC(end);
 
-    //while (1) {
-    initData();
-    CPUID(); RDTSC(start);
-    for (i=0; i<num_runs; i++)
-    {
-        compute();
+    while (1) {
+        initData();
+        CPUID(); RDTSC(start);
+        for (i=0; i<num_runs; i++)
+        {
+            compute();
+        }
+        RDTSC(end); CPUID();
+
+            
+        cycles = ((double)COUNTER_DIFF(end, start));
+
+        if(cycles >= CYCLES_REQUIRED) break;
+
+        num_runs *= 2;
     }
-    RDTSC(end); CPUID();
-    //}
     
     //initData();
     CPUID(); RDTSC(start);    
@@ -73,7 +80,7 @@ void microbench()
     {
         sum += C[i];
     }
-    printf("{'block_size': %d, 'cycles': %llf, 'total_sum': %d }", NB, cycles, sum); 
+    printf("{'block_size': %d, 'cycles': %f, 'total_sum': %f, 'num_runs': %d }", NB, cycles, sum, num_runs); 
     
 }
 
