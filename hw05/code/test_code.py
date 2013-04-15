@@ -3,10 +3,10 @@ import ast
 import sys
 
 RUN_CONFIGURATION = {"code1.c": range(2, 1502,2), "code2.c": range(2, 1502, 2), "code3.c": range(8, 1508, 8)}
-COMPILE_FLAGS = "-m64 -march=corei7-avx -fno-tree-vectorize -O3".split(" ")
-COMPILER = "gcc-4.7"
+COMPILE_FLAGS = "-m64 -march=corei7 -fno-tree-vectorize -O3".split(" ")
+COMPILER = "gcc"
 def total_flops(NB):
-    return 2.0*NB*NB*NB
+    return 2.0*float(NB)*float(NB)*float(NB)
 
 def verify(SRC, NB):
     command_name = SRC[:-2]
@@ -18,8 +18,10 @@ def verify(SRC, NB):
         sys.exit(-1);
 
     try:
-        o = subprocess.check_output(["./"+command_name])
-
+        o = subprocess.call(["./"+command_name], shell=True)
+        if (o == 1):
+            print "Couldn't verify "+command_name+" with "+SRC+" and Blocksize: "+str(NB)+"\n"+o
+            sys.exit(-1)
     except:
         print "Couldn't verify "+command_name+" with "+SRC+" and Blocksize: "+str(NB)+"\n"+o
         sys.exit(-1)
@@ -43,7 +45,7 @@ def benchmark(SRC, NB):
         result = ast.literal_eval(o)
 #        print result
         cycles = result['cycles']
-        return cycles/total_flops(NB)
+        return float(cycles)/total_flops(NB)
 #        num_runs = result['num_runs']
     except Exception as e:
         print "Error in execution of "+command_name+"\n"+str(e)+o 
