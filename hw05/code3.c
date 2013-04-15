@@ -28,7 +28,7 @@ void compute() {
 //                        }
 //                    }
 //                }
-                int c0 = i*NB + 0;
+                int c0 = i*NB + j;
                 int c1 = c0 + 1;
                 int c2 = c1 + 1;
                 int c3 = c2 + 1;
@@ -37,10 +37,10 @@ void compute() {
                 int c6 = c5 + 1;
                 int c7 = c6 + 1;
 
-                int a0 = i*NB;
+                int a0 = i*NB+k;
                 int a1 = a0+1; // k
 
-                int b00 = k*NB + 0;
+                int b00 = k*NB + j;
                 int b10 = b00 + 1;
                 int b20 = b10 + 1;
                 int b30 = b20 + 1;
@@ -48,7 +48,7 @@ void compute() {
                 int b50 = b40 + 1;
                 int b60 = b50 + 1;
                 int b70 = b60 + 1;
-                int b01 = (k+1)*NB + 0;
+                int b01 = (k+1)*NB + j;
                 int b11 = b01 + 1;
                 int b21 = b11 + 1;
                 int b31 = b21 + 1;
