@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define NUM_RUNS 5
+#define CYCLES_REQUIRED 1E8
+#include "rdtsc.h"
+
 #ifndef NB
 #error NB is not defined
 #endif
@@ -21,6 +25,58 @@ void verifier() {
   }
 }
 
+void initData()
+{
+    int i;
+    for(i = 0; i<NB*NB; i++) { 
+        C[i] = Cref[i];
+    }
+}
+
+
+void microbench()
+{
+    int i, num_runs;
+    double cycles;
+    tsc_counter start, end;
+    
+    // limit cycles
+    num_runs = 16;
+    
+
+    CPUID(); RDTSC(start); RDTSC(end);
+    CPUID(); RDTSC(start); RDTSC(end);
+    CPUID(); RDTSC(start); RDTSC(end);
+
+    //while (1) {
+    initData();
+    CPUID(); RDTSC(start);
+    for (i=0; i<num_runs; i++)
+    {
+        compute();
+    }
+    RDTSC(end); CPUID();
+    //}
+    
+    //initData();
+    CPUID(); RDTSC(start);    
+    for (i=0; i<num_runs; i++)
+    {
+        compute();
+    }
+    RDTSC(end); CPUID();
+    
+    cycles = ((double)COUNTER_DIFF(end, start)) / ((double) num_runs);
+
+    double sum = 0.0;
+    for (i=0; i<NB*NB; i++)
+    {
+        sum += C[i];
+    }
+    printf("{'block_size': %d, 'cycles': %llf, 'total_sum': %d }", NB, cycles, sum); 
+    
+}
+
 int main(){
   int i;
   int nb = NB;
@@ -38,15 +94,8 @@ int main(){
     Cref[i] = C[i];
   }
   
-  compute();
-  verifier();
-
-  for(i = 0; i<NB*NB; i++) {
-    if (abs(Cref[i]-C[i])>10e-7) {
-      printf("error\n");
-      return -1;
-    }
-  }
-
+  microbench();
+  //compute();
+  //verifier();
   return 0;
 }
