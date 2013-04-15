@@ -49,11 +49,16 @@ def benchmark(SRC, NB):
         print "Error in execution of "+command_name+"\n"+str(e)+o 
         sys.exit(-1)
 
+print "{"
 for f,block_sizes in RUN_CONFIGURATION.iteritems():
     # benchmark(f, 2)
-    print "File: "+f
+    print '"'+f+'"'+": {"
     for block_size in block_sizes:
         verify(f, block_size)
         cycles = benchmark(f, block_size)
-        print str(block_size)+": "+str(cycles)
+        print str(block_size)+": "+str(cycles)+","
+
+    print "}, "
+print "}"
+        
 
