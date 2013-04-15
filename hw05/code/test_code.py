@@ -6,22 +6,22 @@ RUN_CONFIGURATION = {"code1.c": range(2, 1502,2), "code2.c": range(2, 1502, 2), 
 COMPILE_FLAGS = "-m64 -march=corei7-avx -fno-tree-vectorize -O3".split(" ")
 COMPILER = "gcc-4.7"
 def total_flops(NB):
-    return 2.0*NB*NB*NB
+    n = float(NB)
+    return 2.0*n*n*n + n*n
 
 def verify(SRC, NB):
     command_name = SRC[:-2]
     compile_args_shell = [COMPILER, "-DNB="+str(NB), "-DVERIFY=1" ]+COMPILE_FLAGS+["-o", command_name, SRC, "main.c"]
     try:
-        o = subprocess.check_output(compile_args_shell)
+        o = subprocess.check_call(compile_args_shell)
     except:
         print "Error\n"+o
         sys.exit(-1);
 
-    try:
-        o = subprocess.check_output(["./"+command_name])
+    o = subprocess.check_call(["./"+command_name], shell=True)
 
-    except:
-        print "Couldn't verify "+command_name+" with "+SRC+" and Blocksize: "+str(NB)+"\n"+o
+    if (o != 0):
+        print "Couldn't verify "+command_name+" with "+SRC+" and Blocksize: "+str(NB)+"\n"+str(o)
         sys.exit(-1)
 
 

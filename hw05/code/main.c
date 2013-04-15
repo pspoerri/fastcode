@@ -38,25 +38,30 @@ void microbench()
 {
     int i, num_runs;
     double cycles;
+    double sum;
     tsc_counter start, end;
     
     // limit cycles
     num_runs = NUM_RUNS;
+
+    CPUID(); RDTSC(start); RDTSC(end);
+    CPUID(); RDTSC(start); RDTSC(end);
+    CPUID(); RDTSC(start); RDTSC(end);
     
-
-    CPUID(); RDTSC(start); RDTSC(end);
-    CPUID(); RDTSC(start); RDTSC(end);
-    CPUID(); RDTSC(start); RDTSC(end);
-
+    initData();
     while (1) {
-        initData();
         CPUID(); RDTSC(start);
         for (i=0; i<num_runs; i++)
         {
             compute();
         }
         RDTSC(end); CPUID();
-
+        
+        
+        for (i=0; i<NB*NB; i++)
+        {
+            sum += C[i];
+        }
             
         cycles = ((double)COUNTER_DIFF(end, start));
 
@@ -75,7 +80,7 @@ void microbench()
     
     cycles = ((double)COUNTER_DIFF(end, start)) / ((double) num_runs);
 
-    double sum = 0.0;
+    //sum = 0.0;
     for (i=0; i<NB*NB; i++)
     {
         sum += C[i];
