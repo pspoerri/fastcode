@@ -8,6 +8,24 @@ COMPILER = "gcc-4.7"
 def total_flops(NB):
     return 2.0*NB*NB*NB
 
+def verify(SRC, NB):
+    command_name = SRC[:-2]
+    compile_args_shell = [COMPILER, "-DNB="+str(NB), "-DVERIFY=1" ]+COMPILE_FLAGS+["-o", command_name, SRC, "main.c"]
+    try:
+        o = subprocess.check_output(compile_args_shell)
+    except:
+        print "Error\n"+o
+        sys.exit(-1);
+
+    try:
+        o = subprocess.check_output(["./"+command_name])
+
+    except:
+        print "Couldn't verify "+command_name+" with "+SRC+" and Blocksize: "+str(NB)+"\n"+o
+        sys.exit(-1)
+
+
+        
 def benchmark(SRC, NB):
     command_name = SRC[:-2]
     compile_args_shell = [COMPILER, "-DNB="+str(NB) ]+COMPILE_FLAGS+["-o", command_name, SRC, "main.c"]
@@ -35,6 +53,7 @@ for f,block_sizes in RUN_CONFIGURATION.iteritems():
     # benchmark(f, 2)
     print "File: "+f
     for block_size in block_sizes:
+        verify(f, block_size)
         cycles = benchmark(f, block_size)
         print str(block_size)+": "+str(cycles)
 

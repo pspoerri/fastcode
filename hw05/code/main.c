@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define NUM_RUNS 2
+#define NUM_RUNS 1
 #define CYCLES_REQUIRED 1E8
 #include "rdtsc.h"
 
@@ -101,8 +101,17 @@ int main(){
     Cref[i] = C[i];
   }
   
+#ifndef VERIFY
   microbench();
-  //compute();
-  //verifier();
+#else
+  compute();
+  verifier();
+  for(i = 0; i<NB*NB; i++) {
+    if (abs(Cref[i]-C[i])>10e-7) {
+      printf("error\n");
+      return -1;
+    }
+  }
+#endif
   return 0;
 }
