@@ -79,7 +79,11 @@ void timebench()
     double total_flops = 2.0*block_size*block_size*block_size;
     double flops_cycle = total_flops/cycles;
     
-    for (i=0; i<NB*NB; i++)
+#ifndef N
+  for(i = 0; i<NB*NB; i++)
+#else
+  for(i = 0; i<N*N; i++)
+#endif
     {
         sum += C[i];
     }
@@ -135,7 +139,11 @@ void microbench()
     double total_flops = 2.0*block_size*block_size*block_size;
     double flops_cycle = total_flops/cycles;
     //sum = 0.0;
-    for (i=0; i<NB*NB; i++)
+#ifndef N
+    for(i = 0; i<NB*NB; i++)
+#else
+    for(i = 0; i<N*N; i++)
+#endif
     {
         sum += C[i];
     }
@@ -146,14 +154,23 @@ void microbench()
 int main(){
   int i;
   int nb = NB;
-  A = (double*)malloc(NB*NB*sizeof(double));
-  B = (double*)malloc(NB*NB*sizeof(double));
-  C = (double*)malloc(NB*NB*sizeof(double));
-  Cref = (double*)malloc(NB*NB*sizeof(double));
+#ifndef N
+  int n = NB;
+#else
+  int n = N;
+#endif
+  A = (double*)malloc(n*n*sizeof(double));
+  B = (double*)malloc(n*n*sizeof(double));
+  C = (double*)malloc(n*n*sizeof(double));
+  Cref = (double*)malloc(n*n*sizeof(double));
 
   srand ( time(NULL) );
 
-  for(i = 0; i<NB*NB; i++) { 
+#ifndef N
+  for(i = 0; i<NB*NB; i++) {
+#else
+  for(i = 0; i<N*N; i++) {
+#endif
     A[i] = ((double)rand()/((double)(RAND_MAX)+(double)(1)));
     B[i] = ((double)rand()/((double)(RAND_MAX)+(double)(1)));
     C[i] = ((double)rand()/((double)(RAND_MAX)+(double)(1)));

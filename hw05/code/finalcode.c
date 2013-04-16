@@ -38,7 +38,7 @@ void compute() {
                             int a0 = i*N+k;
                             int a1 = a0+1; // k
 
-                            int b00 = k*NB + j;
+                            int b00 = k*N + j;
                             int b10 = b00 + 1;
                             int b20 = b10 + 1;
                             int b30 = b20 + 1;
