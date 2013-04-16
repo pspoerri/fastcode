@@ -24,65 +24,36 @@ void compute() {
                 {
                     for (j=j0; j<j0+NB; j+=NU)
                     {
+                        double C0 = C[i*N + j    ];
+                        double C1 = C[i*N + j + 1];
+                        double C2 = C[i*N + j + 2];
+                        double C3 = C[i*N + j + 3];
+                        double C4 = C[i*N + j + 4];
+                        double C5 = C[i*N + j + 5];
+                        double C6 = C[i*N + j + 6];
+                        double C7 = C[i*N + j + 7];
                         for (k=k0; k<k0+NB; k+=KU)
                         {
-                            int c0 = i*N + j;
-                            int c1 = c0 + 1;
-                            int c2 = c1 + 1;
-                            int c3 = c2 + 1;
-                            int c4 = c3 + 1;
-                            int c5 = c4 + 1;
-                            int c6 = c5 + 1;
-                            int c7 = c6 + 1;
 
-                            int a0 = i*N+k;
-                            int a1 = a0+1; // k
+                            double A0 = A[i*N+k];
+                            double A1 = A[i*N+k+1];
 
-                            int b00 = k*N + j;
-                            int b10 = b00 + 1;
-                            int b20 = b10 + 1;
-                            int b30 = b20 + 1;
-                            int b40 = b30 + 1;
-                            int b50 = b40 + 1;
-                            int b60 = b50 + 1;
-                            int b70 = b60 + 1;
-                            int b01 = (k+1)*N + j;
-                            int b11 = b01 + 1;
-                            int b21 = b11 + 1;
-                            int b31 = b21 + 1;
-                            int b41 = b31 + 1;
-                            int b51 = b41 + 1;
-                            int b61 = b51 + 1;
-                            int b71 = b61 + 1;
-
-                            double C0 = C[c0];
-                            double C1 = C[c1];
-                            double C2 = C[c2];
-                            double C3 = C[c3];
-                            double C4 = C[c4];
-                            double C5 = C[c5];
-                            double C6 = C[c6];
-                            double C7 = C[c7];
-
-                            double A0 = A[a0];
-                            double A1 = A[a1];
-
-                            double B00 = B[b00];
-                            double B10 = B[b10];
-                            double B20 = B[b20];
-                            double B30 = B[b30];
-                            double B40 = B[b40];
-                            double B50 = B[b50];
-                            double B60 = B[b60];
-                            double B70 = B[b70];
-                            double B01 = B[b01];
-                            double B11 = B[b11];
-                            double B21 = B[b21];
-                            double B31 = B[b31];
-                            double B41 = B[b41];
-                            double B51 = B[b51];
-                            double B61 = B[b61];
-                            double B71 = B[b71];
+                            double B00 = B[k*N + j        ];
+                            double B10 = B[k*N + j + 1    ];
+                            double B20 = B[k*N + j + 2    ];
+                            double B30 = B[k*N + j + 3    ];
+                            double B40 = B[k*N + j + 4    ];
+                            double B50 = B[k*N + j + 5    ];
+                            double B60 = B[k*N + j + 6    ];
+                            double B70 = B[k*N + j + 7    ];
+                            double B01 = B[(k+1)*N + j    ];
+                            double B11 = B[(k+1)*N + j + 1];
+                            double B21 = B[(k+1)*N + j + 2];
+                            double B31 = B[(k+1)*N + j + 3];
+                            double B41 = B[(k+1)*N + j + 4];
+                            double B51 = B[(k+1)*N + j + 5];
+                            double B61 = B[(k+1)*N + j + 6];
+                            double B71 = B[(k+1)*N + j + 7];
                         
                             C0 += A0*B00;
                             C1 += A0*B10;
@@ -101,15 +72,16 @@ void compute() {
                             C6 += A1*B61;
                             C7 += A1*B71;
 
-                            C[c0] = C0;
-                            C[c1] = C1;
-                            C[c2] = C2;
-                            C[c3] = C3;
-                            C[c4] = C4;
-                            C[c5] = C5;
-                            C[c6] = C6;
-                            C[c7] = C7;
+
                         }
+                        C[i*N + j    ] = C0;
+                        C[i*N + j + 1] = C1;
+                        C[i*N + j + 2] = C2;
+                        C[i*N + j + 3] = C3;
+                        C[i*N + j + 4] = C4;
+                        C[i*N + j + 5] = C5;
+                        C[i*N + j + 6] = C6;
+                        C[i*N + j + 7] = C7;
                     }
                 }
             }
