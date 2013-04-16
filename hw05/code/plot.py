@@ -18,6 +18,8 @@ for f,results in runtime_data.iteritems():
     
     d = map(lambda l: (int(l['block_size']), float(l['flops_cycle'])), results)
     d.sort()
+    print f
+    print d
     block_sizes, flops_cycle = zip(*d)
 #print block_sizes
 #    print flops_cycle

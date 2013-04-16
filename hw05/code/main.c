@@ -16,6 +16,7 @@ double *A, *B, *C, *Cref;
 
 void verifier() {
   int i, j, k;
+#ifndef N
   for(i = 0; i < NB; ++i) {
     for(j = 0; j < NB; ++j) {
       double out = 0;
@@ -25,6 +26,21 @@ void verifier() {
       Cref[i*NB+j] += out;
     }
   }
+#else
+#ifndef N
+#error N not defined
+#endif
+
+  for(i = 0; i < N; ++i) {
+    for(j = 0; j < N; ++j) {
+      double out = 0;
+      for(k = 0; k < N; ++k) {
+        out = out + A[i*N+k] * B[k*N+j];
+      }
+      Cref[i*N+j] += out;
+    }
+  }
+#endif
 }
 
 void initData()
@@ -153,12 +169,18 @@ int main(){
 #else
   compute();
   verifier();
+
+#ifndef N
   for(i = 0; i<NB*NB; i++) {
+#else
+  for(i = 0; i<N*N; i++) {
+#endif
     if (abs(Cref[i]-C[i])>10e-7) {
       printf("error\n");
       return -1;
     }
   }
+  printf("Verified\n");
 #endif
   return 0;
 }
