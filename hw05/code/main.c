@@ -42,8 +42,6 @@ void timebench()
     double start, tmeas;
     
     num_runs = NUM_RUNS;
-    if (NB < 200)
-        num_runs *= 16;
     // fill cache
     for (i = 0; i < num_runs; i++)
         compute();
@@ -61,12 +59,15 @@ void timebench()
 
     double cycles = tmeas*(((double) CLOCK_SPEED)/((double) num_runs));
     double time_run = tmeas/((double) num_runs);
-    //sum = 0.0;
+    double block_size = (double) NB;
+    double total_flops = 2.0*block_size*block_size*block_size;
+    double flops_cycle = total_flops/cycles;
+    
     for (i=0; i<NB*NB; i++)
     {
         sum += C[i];
     }
-    printf("{'block_size': %d, 'time': %f, 'cycles': %f, 'total_sum': %f, 'num_runs': %d }", NB, time_run, cycles, sum, num_runs); 
+    printf("{'block_size': %d, 'time': %f, 'cycles': %f, 'total_sum': %f, 'num_runs': %d, 'flops_cycle': %f }", NB, time_run, cycles, sum, num_runs, flops_cycle); 
 }
 
 void microbench()
@@ -93,10 +94,10 @@ void microbench()
         RDTSC(end); CPUID();
         
         
-        for (i=0; i<NB*NB; i++)
-        {
-            sum += C[i];
-        }
+//       for (i=0; i<NB*NB; i++)
+//        {
+//            sum += C[i];
+//        }
             
         cycles = ((double)COUNTER_DIFF(end, start));
 
@@ -114,13 +115,15 @@ void microbench()
     RDTSC(end); CPUID();
     
     cycles = ((double)COUNTER_DIFF(end, start)) / ((double) num_runs);
-
+    double block_size = (double) NB;
+    double total_flops = 2.0*block_size*block_size*block_size;
+    double flops_cycle = total_flops/cycles;
     //sum = 0.0;
     for (i=0; i<NB*NB; i++)
     {
         sum += C[i];
     }
-    printf("{'block_size': %d, 'cycles': %f, 'total_sum': %f, 'num_runs': %d }", NB, cycles, sum, num_runs); 
+    printf("{'block_size': %d, 'cycles': %f, 'total_sum': %f, 'num_runs': %d, 'flops_cycle': %f }", NB, cycles, sum, num_runs, flops_cycle); 
     
 }
 
@@ -142,8 +145,11 @@ int main(){
   }
   
 #ifndef VERIFY
+//    printf("{'microbench': ");
     microbench();
+//    printf(", 'timebench': ");
 //    timebench();
+//    printf("}"); 
 #else
   compute();
   verifier();

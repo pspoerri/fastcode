@@ -4,9 +4,10 @@ import sys
 import pickle
 
 RUN_CONFIGURATION = {
-    "code1.c": range(4, 800,4), 
-    "code2.c": range(4, 800, 4), 
-    "code3.c": range(8, 800, 8)}
+    "code0.c": range(4, 520, 4),
+    "code1.c": range(4, 520, 4), 
+    "code2.c": range(4, 520, 4), 
+    "code3.c": range(8, 520, 8)}
 COMPILE_FLAGS = "-m64 -march=corei7 -fno-tree-vectorize -O3".split(" ")
 COMPILE_FILES = ["main.c", "ftimer.c"]
 COMPILER = "gcc-4.7"
@@ -47,11 +48,6 @@ def benchmark(SRC, NB):
         o = subprocess.check_output(["./"+command_name])
 #        print o
         result = ast.literal_eval(o)
-#        print result
-        cycles = float(result['cycles'])
-        flops = cycles/total_flops(NB)
-#        print str(NB)+": "+str(flops)+","
-        result['flops_cycle'] = flops
         return result
 #        num_runs = result['num_runs']
     except Exception as e:
@@ -70,6 +66,10 @@ def measure():
             result_run = benchmark(f, block_size)
             results += [result_run]
             print result_run
+            # print str(block_size)
+            # print str(result_run['timebench']['flops_cycle'])
+            # print str(result_run['microbench']['flops_cycle'])
+
         data[str(f)] = results
         
     
