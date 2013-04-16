@@ -283,7 +283,7 @@ The peak performance is $16$ flops/cycle and the hardware is capable of loading
     \caption{Roofline plot depicting a $2$GHz processor with $16$ GByte/sec memory, capable of $2\times256$ bit vector instructions (one add and one multiply).}
     \label{fig:roofline}
 \end{figure}
-The maximum achievable performance of the given program is $4$ floats per cycle (see figure \ref{fig:roofline}). In order to improve the performance we need to remove dependencies in the code such that more floating point operations can be executed.
+The maximum achievable performance of the given program is $4$ floats per cycle (see figure \ref{fig:roofline}). In order to improve the performance we need to remove dependencies in the code such that more floating point operations can be executed. And the number of floating point operations per loaded byte has to be increased.
 
 
 \end{document}
