@@ -4,8 +4,8 @@ import sys
 import pickle
 
 RUN_CONFIGURATION = {
-    "code1.c": range(2, 800,2), 
-    "code2.c": range(2, 800, 2), 
+    "code1.c": range(4, 800,4), 
+    "code2.c": range(4, 800, 4), 
     "code3.c": range(8, 800, 8)}
 COMPILE_FLAGS = "-m64 -march=corei7 -fno-tree-vectorize -O3".split(" ")
 COMPILE_FILES = ["main.c", "ftimer.c"]
@@ -50,7 +50,7 @@ def benchmark(SRC, NB):
 #        print result
         cycles = float(result['cycles'])
         flops = cycles/total_flops(NB)
-        print str(NB)+": "+str(flops)+","
+#        print str(NB)+": "+str(flops)+","
         result['flops_cycle'] = flops
         return result
 #        num_runs = result['num_runs']
@@ -61,11 +61,10 @@ def benchmark(SRC, NB):
 def measure():
     data = {}
 
-    print "{"
     for f,block_sizes in RUN_CONFIGURATION.iteritems():
         results = []
+        print f
         # benchmark(f, 2)
-        print '"'+f+'"'+": {"
         for block_size in block_sizes:
             # verify(f, block_size)
             result_run = benchmark(f, block_size)
@@ -73,8 +72,6 @@ def measure():
             print result_run
         data[str(f)] = results
         
-        print "}, "
-    print "}"
     
     from datetime import datetime
     f = open("run_"+datetime.now().strftime('%y_%m_%d__%H_%M')+'.pickle', 'wb')

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define NUM_RUNS 8
+#define NUM_RUNS 1
 #define CYCLES_REQUIRED 1E8
 #include "rdtsc.h"
 #include "ftimer.h"
@@ -142,8 +142,8 @@ int main(){
   }
   
 #ifndef VERIFY
-//  microbench();
-    timebench();
+    microbench();
+//    timebench();
 #else
   compute();
   verifier();
