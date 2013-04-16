@@ -60,7 +60,7 @@ void timebench()
 //    double cycles = time_run*((double) CLOCK_SPEED);
 
     double cycles = tmeas*(((double) CLOCK_SPEED)/((double) num_runs));
-    double time_run = tmeas/((double) CLOCK_SPEED);
+    double time_run = tmeas/((double) num_runs);
     //sum = 0.0;
     for (i=0; i<NB*NB; i++)
     {

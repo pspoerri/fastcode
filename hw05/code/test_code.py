@@ -1,15 +1,19 @@
 import subprocess
 import ast
 import sys
+import pickle
 
-RUN_CONFIGURATION = {"code1.c": range(2, 1502,2), "code2.c": range(2, 1502, 2), "code3.c": range(8, 1508, 8)}
+RUN_CONFIGURATION = {
+    "code1.c": range(2, 800,2), 
+    "code2.c": range(2, 800, 2), 
+    "code3.c": range(8, 800, 8)}
 COMPILE_FLAGS = "-m64 -march=corei7 -fno-tree-vectorize -O3".split(" ")
 COMPILE_FILES = ["main.c", "ftimer.c"]
 COMPILER = "gcc-4.7"
 
 def total_flops(NB):
     n = float(NB)
-    return 2.0*n*n*n + n*n
+    return 2.0*n*n*n
 
 def verify(SRC, NB):
     command_name = SRC[:-2]
@@ -44,23 +48,40 @@ def benchmark(SRC, NB):
 #        print o
         result = ast.literal_eval(o)
 #        print result
-        cycles = result['cycles']
-        return float(cycles)/total_flops(NB)
+        cycles = float(result['cycles'])
+        flops = cycles/total_flops(NB)
+        print str(NB)+": "+str(flops)+","
+        result['flops_cycle'] = flops
+        return result
 #        num_runs = result['num_runs']
     except Exception as e:
         print "Error in execution of "+command_name+"\n"+str(e)+o 
         sys.exit(-1)
 
-print "{"
-for f,block_sizes in RUN_CONFIGURATION.iteritems():
-    # benchmark(f, 2)
-    print '"'+f+'"'+": {"
-    for block_size in block_sizes:
-        verify(f, block_size)
-        cycles = benchmark(f, block_size)
-        print str(block_size)+": "+str(cycles)+","
+def measure():
+    data = {}
 
-    print "}, "
-print "}"
+    print "{"
+    for f,block_sizes in RUN_CONFIGURATION.iteritems():
+        results = []
+        # benchmark(f, 2)
+        print '"'+f+'"'+": {"
+        for block_size in block_sizes:
+            # verify(f, block_size)
+            result_run = benchmark(f, block_size)
+            results += [result_run]
+            print result_run
+        data[str(f)] = results
+        
+        print "}, "
+    print "}"
+    
+    from datetime import datetime
+    f = open("run_"+datetime.now().strftime('%y_%m_%d__%H_%M')+'.pickle', 'wb')
+    pickle.dump(data, f)
+
+measure() 
+
+
         
 
