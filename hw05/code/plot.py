@@ -26,6 +26,7 @@ for f,results in runtime_data.iteritems():
 
     p = plt.plot(block_sizes, flops_cycle, label=str(f))
 plt.legend(loc='best')
+plt.grid(True)
 plt.xlabel('Block Size') 
 plt.title('Flops/Cycle')
 plt.show()

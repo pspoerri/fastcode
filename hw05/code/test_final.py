@@ -5,7 +5,8 @@ import pickle
 
 RUN_CONFIGURATION = {
     "finalcode.c": range(56, 2000, 56),
-    "finalcode_176.c": range(176, 2000, 176)}
+#    "finalcode_176.c": range(176, 2000, 176),
+    "code0.c": range(2, 64, 2)+range(64,128,4)+range(64,512,16)+range(512,1600,128)}
 COMPILE_FLAGS = "-m64 -march=corei7 -fno-tree-vectorize -O3".split(" ")
 COMPILE_FILES = ["main.c", "ftimer.c"]
 COMPILER = "gcc-4.7"

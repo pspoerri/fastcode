@@ -1,5 +1,10 @@
+#ifndef N
 #ifndef NB
 #error NB is not defined
+#endif
+#else
+#undef NB
+#define NB N
 #endif
 
 
