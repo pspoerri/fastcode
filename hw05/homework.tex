@@ -198,14 +198,14 @@ $M_U=2$, $N_U=2$, $K_U=1$. The inequality:
     \left\lceil {N_B^2 \over 8} \right\rceil + 3\left\lceil {N_B 2 \over 8} \right\rceil
     + \left\lceil {4 \over 8} \right\rceil \leq {4096 \over 8}
 \end{align*}
-holds an optimal value of $N_B=61$.  Running our code with $N_B=60$ results in a performance of $0.68$ flops/cycle.
+holds an optimal value of $N_B=60$.  Running our code with $N_B=60$ results in a performance of $0.68$ flops/cycle.
 \subsubsection{code2}
 $M_U=2$, $N_U=2$, $K_U=2$. The inequality:
 \begin{align*}
     \left\lceil {N_B^2 \over 8} \right\rceil + 3\left\lceil {N_B 2 \over 8} \right\rceil
     + \left\lceil {4\over 8} \right\rceil \leq {4096 \over 8}
 \end{align*}
-holds an optimal value of $N_B=61$. Running our code with $N_B=60$ results in a performance of $1.02$ flops/cycle.
+holds an optimal value of $N_B=60$. Running our code with $N_B=60$ results in a performance of $1.02$ flops/cycle.
 
 \subsubsection{code3}
 $M_U=1$, $N_U=8$, $K_U=2$. The inequality:
@@ -225,7 +225,7 @@ Thus we are able to conclude that \lstinline{code3.c} performs best for level 1 
 \end{figure}  
 
 \subsection{Blocking for L2 cache}
-The L1 cache can hold $32768$ doubles and has a cache line size of $512$ bytes. Hence we have to optimize the inequality:
+The L1 cache can hold $32768$ doubles and has a cache line size of $64$ bytes. Hence we have to optimize the inequality:
 
 \begin{align*}
     \left\lceil {N_B^2 \over B_1} \right\rceil + 3\left\lceil {N_B M_U \over B_1} \right\rceil
@@ -236,23 +236,23 @@ The L1 cache can hold $32768$ doubles and has a cache line size of $512$ bytes. 
 \subsubsection{code1}
 $M_U=2$, $N_U=2$, $K_U=1$. The inequality:
 \begin{align*}
-    \left\lceil {N_B^2 \over 64} \right\rceil + 3\left\lceil {N_B 2 \over 64} \right\rceil
-    + \left\lceil {4 \over 64} \right\rceil \leq {32768 \over 64}
+    \left\lceil {N_B^2 \over 8} \right\rceil + 3\left\lceil {N_B 2 \over 8} \right\rceil
+    + \left\lceil {4 \over 8} \right\rceil \leq {32768 \over 8}
 \end{align*}
-holds an optimal value of $N_B=177$.  Running our code with $N_B=176$ results in a performance of $0.65$ flops/cycle.
+holds an optimal value of $N_B=178$.  Running our code with $N_B=178$ results in a performance of $0.65$ flops/cycle.
 \subsubsection{code2}
 $M_U=2$, $N_U=2$, $K_U=2$. The inequality:
 \begin{align*}
-    \left\lceil {N_B^2 \over 64} \right\rceil + 3\left\lceil {N_B 2 \over 64} \right\rceil
-    + \left\lceil {4\over 64} \right\rceil \leq {32768 \over 64}
+    \left\lceil {N_B^2 \over 8} \right\rceil + 3\left\lceil {N_B 2 \over 8} \right\rceil
+    + \left\lceil {4\over 8} \right\rceil \leq {32768 \over 8}
 \end{align*}
-holds an optimal value of $N_B=177$. Running our code with $N_B=176$ results in a performance of $0.88$ flops/cycle.
+holds an optimal value of $N_B=178$. Running our code with $N_B=178$ results in a performance of $0.88$ flops/cycle.
 
 \subsubsection{code3}
 $M_U=1$, $N_U=8$, $K_U=2$. The inequality:
 \begin{align*}
-    \left\lceil {N_B^2 \over 64} \right\rceil + 3\left\lceil {N_B \over 64} \right\rceil
-    + \left\lceil {8 \over 64} \right\rceil \leq {32768 \over 64}
+    \left\lceil {N_B^2 \over 8} \right\rceil + 3\left\lceil {N_B \over 8} \right\rceil
+    + \left\lceil {8 \over 8} \right\rceil \leq {32768 \over 8}
 \end{align*}
 holds an optimal value of $N_B=179$. Due to blocking we had to run the code with $N_B=176$ and were able to achieve a performance of $0.94$ flops/cycle.
 
@@ -267,14 +267,23 @@ Thus we are able to conclude that \lstinline{code3.c} performs best for level 2 
 %code0.c
 %[(4, 0.874371), (8, 0.87663), (12, 0.849749), (16, 0.581496), (20, 0.493401), (24, 0.497226), (28, 0.499349), (32, 0.488972), (36, 0.502254), (40, 0.439002), (44, 0.444706), (48, 0.441584), (52, 0.452981), (56, 0.456421), (60, 0.456669), (64, 0.443232), (68, 0.459338), (72, 0.46418), (76, 0.467058), (80, 0.459245), (84, 0.470048), (88, 0.470188), (92, 0.468919), (96, 0.462853), (100, 0.469399), (104, 0.475411), (108, 0.477022), (112, 0.468286), (116, 0.479119), (120, 0.477829), (124, 0.456961), (128, 0.329401), (132, 0.464069), (136, 0.445879), (140, 0.465246), (144, 0.437936), (148, 0.450402), (152, 0.450634), (156, 0.450411), (160, 0.371621), (164, 0.448952), (168, 0.436868), (172, 0.449798), (176, 0.427867), (180, 0.445371), (184, 0.436424), (188, 0.440375), (192, 0.33783), (196, 0.436053), (200, 0.42686), (204, 0.429847), (208, 0.407052), (212, 0.42682), (216, 0.422948), (220, 0.425334), (224, 0.353171), (228, 0.423397), (232, 0.422521), (236, 0.425643), (240, 0.393935), (244, 0.422976), (248, 0.421569), (252, 0.423371), (256, 0.245637), (260, 0.425034), (264, 0.421426), (268, 0.422697), (272, 0.36836), (276, 0.421932), (280, 0.419144), (284, 0.421723), (288, 0.346904), (292, 0.422544), (296, 0.419653), (300, 0.42041), (304, 0.354982), (308, 0.42154), (312, 0.41945), (316, 0.420461), (320, 0.304396), (324, 0.421537), (328, 0.419438), (332, 0.421967), (336, 0.354895), (340, 0.422426), (344, 0.419721), (348, 0.421708), (352, 0.332276), (356, 0.422029), (360, 0.420067), (364, 0.420795), (368, 0.354577), (372, 0.421526), (376, 0.420766), (380, 0.420777), (384, 0.27217), (388, 0.420619), (392, 0.420521), (396, 0.420695), (400, 0.353974), (404, 0.420589), (408, 0.420193), (412, 0.420345), (416, 0.330341), (420, 0.419415), (424, 0.420659), (428, 0.4052), (432, 0.335703), (436, 0.406811), (440, 0.381807), (444, 0.394172), (448, 0.283555), (452, 0.390012), (456, 0.397713), (460, 0.39188), (464, 0.336926), (468, 0.391994), (472, 0.361985), (476, 0.342762), (480, 0.304915), (484, 0.343408), (488, 0.366122), (492, 0.32656), (496, 0.305655), (500, 0.331654), (504, 0.339164), (508, 0.342069), (512, 0.12099), (516, 0.272752)]
 \section{MMM}
-We benchmarked our \lstinline{finalcode.c} program with both block sizes $N_B=176$ and $N_B=56$ to show the difference in performance for L1 and L2 cache blocking.
+We benchmarked our \lstinline{code0.c} code and our \lstinline{finalcode.c} code with a block size of $N_B=56$ and observe that the \lstinline{finalcode.c} is faster than the unoptimized code \lstinline{code0.c}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{code/flops_cycle_matrix}
-    \caption{Performance Plot showing flops/cycle for \lstinline{finalcode.c} with two different block sizes and different matrix sizes. Compiler flags: \texttt{-m64 -march=corei7 -fno-tree-vectorize -O3} (gcc 4.6.3) on an Intel Core i5-3570K CPU.}
+    \caption{Performance Plot showing flops/cycle for different matrix sizes with \lstinline{finalcode.c} run with block size $56$ and \lstinline{code0.c}. Compiler flags: \texttt{-m64 -march=corei7 -fno-tree-vectorize -O3} (gcc 4.6.3) on an Intel Core i5-3570K CPU.}
     \label{fig:matrix_cycle}
 \end{figure}  
 
+\section{Roofline}
+The peak performance is $16$ flops/cycle and the hardware is capable of loading 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{beautiful_roofline_plot}
+    \caption{Roofline plot depicting a $2$GHz processor with $16$ GByte/sec memory, capable of $2\times256$ bit vector instructions (one add and one multiply).}
+    \label{fig:roofline}
+\end{figure}
+The maximum achievable performance of the given program is $4$ floats per cycle (see figure \ref{fig:roofline}). In order to improve the performance we need to remove dependencies in the code such that more floating point operations can be executed.
 
 
 \end{document}
