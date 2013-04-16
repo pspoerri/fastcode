@@ -42,6 +42,8 @@ void timebench()
     double start, tmeas;
     
     num_runs = NUM_RUNS;
+    if (NB < 200)
+        num_runs *= 16;
     // fill cache
     for (i = 0; i < num_runs; i++)
         compute();
@@ -54,8 +56,11 @@ void timebench()
     tmeas = get_etime();
     tmeas = tmeas-start;
     
-    double time_run = tmeas/((double) num_runs);
-    double cycles = time_run*((double) CLOCK_SPEED);
+//    double time_run = tmeas/((double) num_runs);
+//    double cycles = time_run*((double) CLOCK_SPEED);
+
+    double cycles = tmeas*(((double) CLOCK_SPEED)/((double) num_runs));
+    double time_run = tmeas/((double) CLOCK_SPEED);
     //sum = 0.0;
     for (i=0; i<NB*NB; i++)
     {
