@@ -135,9 +135,16 @@ void microbench()
     RDTSC(end); CPUID();
     
     cycles = ((double)COUNTER_DIFF(end, start)) / ((double) num_runs);
+#ifndef N
     double block_size = (double) NB;
     double total_flops = 2.0*block_size*block_size*block_size;
     double flops_cycle = total_flops/cycles;
+#else
+    double matrix_size = (double) N;
+    double block_size = (double) NB;
+    double total_flops = 2.0*matrix_size*matrix_size*matrix_size;
+    double flops_cycle = total_flops/cycles;
+#endif
     //sum = 0.0;
 #ifndef N
     for(i = 0; i<NB*NB; i++)
@@ -147,8 +154,11 @@ void microbench()
     {
         sum += C[i];
     }
+#ifndef N
     printf("{'block_size': %d, 'cycles': %f, 'total_sum': %f, 'num_runs': %d, 'flops_cycle': %f }", NB, cycles, sum, num_runs, flops_cycle); 
-    
+#else
+    printf("{'matrix_size': %d, 'block_size': %d, 'cycles': %f, 'total_sum': %f, 'num_runs': %d, 'flops_cycle': %f }", N, NB, cycles, sum, num_runs, flops_cycle); 
+#endif 
 }
 
 int main(){
