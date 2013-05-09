@@ -14,22 +14,23 @@
 
 #include <assert.h>
 
-float *x, *y, alpha; 
+float *x, *y, h0, h1, h2, h3; 
 
-void warmup(float *x, float *y, int size, float alpha);
+void FIR(float *y, float *x, float h0, float h1, float h2, float h3, int size);
+
 
 void verify(int n)
 {
     int i, k;
-    for (i=0; i<n; i++)
+    for (i=0; i<size-3; i++)
     {
-       if (fabs(y[i] - x[2*i]+x[2*i]+x[2*i+1]/alpha)>1e-6)
+       if (fabs(y[i] - (h3*x[i] + h2*x[i+1] + h1*x[i+2] + h0*x[i+3]))>1e-6)
        {
             printf("Error at %d\n", i);
 
             for (k=0; k<n; k++)
             {
-                printf("Got: %f, expected: %f\n", y[k], (x[2*k]+x[2*k]+x[2*k+1]/alpha));
+                printf("Got: %f, expected: %f\n", y[k], h3*x[i] + h2*x[i+1] + h1*x[i+2] + h0*x[i+3]);
             }
             exit(1);
        }
@@ -88,19 +89,21 @@ int main(){
     int n = N;
     alpha = 1000.0; 
     y = (float*)malloc(n*sizeof(float));
-    x = (float*)malloc(2*n*sizeof(float));
+    x = (float*)malloc(n*sizeof(float));
 
+    
     srand ( time(NULL) );
 
-    for(i = 0; i<2*n; i++) {
+    h0 = ((float)rand()/((float)(RAND_MAX)+(float)(1)));
+    h1 = ((float)rand()/((float)(RAND_MAX)+(float)(1)));
+    h2 = ((float)rand()/((float)(RAND_MAX)+(float)(1)));
+    h3 = ((float)rand()/((float)(RAND_MAX)+(float)(1)));
+    
+    for(i = 0; i<n; i++) {
         x[i] = ((float)rand()/((float)(RAND_MAX)+(float)(1)));
-        if (i < n) 
-        {
-            y[i] = ((float)rand()/((float)(RAND_MAX)+(float)(1)));
-        }
     }
   
     microbench();
-//verify(n);
+    verify(n);
     return 0;
 }
