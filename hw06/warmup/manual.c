@@ -1,9 +1,11 @@
 #include <immintrin.h>
 void warmup(float *x, float *y, int size, float alpha)
 {
+    #pragma ivdep
     int i;
+
     __m256 m = _mm256_set_ps(1.0/alpha, 2.0, 1.0/alpha, 2.0, 1.0/alpha, 2.0, 1.0/alpha, 2.0);
-    
+    #pragma vector aligned
     for (i=0; i<size; i+=4)
     {
         __m256 t = _mm256_load_ps(x+2*i);
