@@ -1,4 +1,4 @@
-	.file	"warmup.c"
+	.file	"base.c"
 	.text
 	.p2align 4,,15
 	.globl	warmup
@@ -12,12 +12,12 @@ warmup:
 	.p2align 4,,10
 	.p2align 3
 .L3:
-	movss	4(%rdi,%rax,8), %xmm2
-	movss	(%rdi,%rax,8), %xmm1
-	divss	%xmm0, %xmm2
-	addss	%xmm1, %xmm1
-	addss	%xmm2, %xmm1
-	movss	%xmm1, (%rsi,%rax,4)
+	vmovss	4(%rdi,%rax,8), %xmm2
+	vmovss	(%rdi,%rax,8), %xmm1
+	vdivss	%xmm0, %xmm2, %xmm2
+	vaddss	%xmm1, %xmm1, %xmm1
+	vaddss	%xmm2, %xmm1, %xmm1
+	vmovss	%xmm1, (%rsi,%rax,4)
 	addq	$1, %rax
 	cmpl	%eax, %edx
 	jg	.L3

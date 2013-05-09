@@ -6,8 +6,8 @@ plt.rc('font', family='serif')
 
 #filename = 'run_13_04_16__10_10.pickle'
 #filename = 'run_13_04_16__10_23.pickle'
-filename = 'run_13_05_09__15_04.pickle'
-
+#filename = 'run_13_05_09__15_04.pickle'
+filename = 'run_13_05_09__19_13.pickle'
 fig = plt.figure()
 
 f = open(filename, 'r')
@@ -28,7 +28,7 @@ for f,results in runtime_data.iteritems():
     p = plt.plot(matrix_sizes, flops_cycle, label=f)
 plt.legend(loc='best')
 plt.grid(True)
-plt.xlabel('Matrix Size') 
+plt.xlabel('Size') 
 plt.title('Flops/Cycle')
 plt.show()
 
