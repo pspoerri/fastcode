@@ -13,6 +13,7 @@
 #endif 
 
 #include <assert.h>
+#include <malloc.h>
 
 float *x, *y, h0, h1, h2, h3; 
 
@@ -22,20 +23,41 @@ void FIR(float *y, float *x, float h0, float h1, float h2, float h3, int size);
 void verify(int n)
 {
     int i, k;
-    for (i=0; i<size-3; i++)
+    for (i=0; i<n-3; i++)
     {
-       if (fabs(y[i] - (h3*x[i] + h2*x[i+1] + h1*x[i+2] + h0*x[i+3]))>1e-6)
+       float val = fabs(y[i] - (h3*x[i] + h2*x[i+1] + h1*x[i+2] + h0*x[i+3]));
+       if (val >1e-3)
        {
-            printf("Error at %d\n", i);
+            printf("Error at %d with %f\n", i, val);
 
-            for (k=0; k<n; k++)
+            for (k=0; k<n-3; k++)
             {
-                printf("Got: %f, expected: %f\n", y[k], h3*x[i] + h2*x[i+1] + h1*x[i+2] + h0*x[i+3]);
+                printf("Got: %f, expected: %f\n", y[k], h3*x[k] + h2*x[k+1] + h1*x[k+2] + h0*x[k+3]);
             }
             exit(1);
        }
     }
 }
+
+// From http://stackoverflow.com/questions/6320264/how-to-align-pointer
+int roundUp(size_t a, size_t b) { return (1 + (a - 1) / b) * b; }
+
+//We assume here that size_t and void* can be converted to each other
+void *malloc_aligned(size_t size, size_t align)
+{
+    assert(align % sizeof(size_t) == 0);
+    assert(sizeof(void*) == sizeof(size_t)); //Not sure if needed, but whatever
+
+    void *p = malloc(size + 2 * align);
+    if (p != NULL)
+    {
+        size_t base = (size_t)p;
+        p = (char*)roundUp(base, align) + align;
+        ((size_t*)p)[-1] = (size_t)p - base;
+    }
+    return p;
+}
+
 
 void microbench()
 {
@@ -56,7 +78,7 @@ void microbench()
         CPUID(); RDTSC(start);
         for (i=0; i<num_runs; i++)
         {
-            warmup(x,y, n, alpha);
+            FIR(y,x, h0,h1,h2,h3,n);
         }
         RDTSC(end); CPUID();
         
@@ -70,7 +92,7 @@ void microbench()
     CPUID(); RDTSC(start);    
     for (i=0; i<num_runs; i++)
     {
-        warmup(x,y, n, alpha);
+        FIR(y,x, h0,h1,h2,h3,n);
     }
     RDTSC(end); CPUID();
     
@@ -79,7 +101,7 @@ void microbench()
     sum = 0.0;
 
     sum = y[0];
-    double total_flops = n*3;
+    double total_flops = n*7;
     double flops_cycle = total_flops/cycles;
     printf("{'size': %d, 'cycles': %f, 'total_sum': %f, 'num_runs': %d, 'flops_cycle': %f }", n, cycles, sum, num_runs, flops_cycle); 
 }
@@ -87,11 +109,11 @@ void microbench()
 int main(){
     int i;
     int n = N;
-    alpha = 1000.0; 
-    y = (float*)malloc(n*sizeof(float));
-    x = (float*)malloc(n*sizeof(float));
-
     
+    y = (float*) malloc_aligned( n*sizeof(float), 32);
+    x = (float*) malloc_aligned( n*sizeof(float), 32);
+//    y = (float*) malloc(n*sizeof(float));
+//    x = (float*) malloc(n*sizeof(float));
     srand ( time(NULL) );
 
     h0 = ((float)rand()/((float)(RAND_MAX)+(float)(1)));
@@ -99,8 +121,13 @@ int main(){
     h2 = ((float)rand()/((float)(RAND_MAX)+(float)(1)));
     h3 = ((float)rand()/((float)(RAND_MAX)+(float)(1)));
     
+    h0 = 1.0;
+    h1 = 2.0;
+    h2 = 3.0;
+    h3 = 4.0;
     for(i = 0; i<n; i++) {
-        x[i] = ((float)rand()/((float)(RAND_MAX)+(float)(1)));
+    //    x[i] = ((float)rand()/((float)(RAND_MAX)+(float)(1)));
+        x[i] = (float) i;
     }
   
     microbench();
