@@ -2,8 +2,7 @@
 void warmup(float *x, float *y, int size, float alpha)
 {
     int i;
-    __m256 m = _mm256_set_ps(2.0, 0.5/alpha, 2.0, 0.5/alpha, 2.0, 0.5/alpha, 2.0, 0.5/alpha);
-    __m256 zero = _mm256_set_ps(0 , 0, 0 , 0, 0 , 0, 0 , 0);
+    __m256 m = _mm256_set_ps(1.0/alpha, 2.0, 1.0/alpha, 2.0, 1.0/alpha, 2.0, 1.0/alpha, 2.0);
     
     for (i=0; i<size; i+=4)
     {

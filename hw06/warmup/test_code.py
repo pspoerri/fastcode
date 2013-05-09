@@ -5,13 +5,17 @@ import pickle
 
 RUN_CONFIGURATION = {
     "base.c": { 
-        "range": range(4, 16, 4),
+        "range": range(4, 804, 4),
         "flags": "-m64 -march=corei7 -fno-tree-vectorize -O3".split(" ")
     },
     "auto.c": {
-        "range": range(4, 16, 4),
+        "range": range(4, 804, 4),
         "flags": "-m64 -march=corei7 -O3".split(" ")
     },
+    "manual.c": {
+        "range": range(4, 804, 4),
+        "flags": "-m64 -march=corei7-avx -O3".split(" ")
+    }
 }
 COMPILE_FILES = ["main.c", "ftimer.c"]
 COMPILER = "gcc-4.7"
