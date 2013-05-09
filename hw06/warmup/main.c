@@ -12,10 +12,24 @@
 #error N not defined
 #endif 
 
+#include <assert.h>
+
 float *x, *y, alpha; 
 
 void warmup(float *x, float *y, int size, float alpha);
 
+void verify(int n)
+{
+    int i;
+    for (i=0; i<n; i++)
+    {
+       if (y[i] != x[2*i]+x[2*i]+x[2*i+1]/alpha)
+       {
+            printf("Error at %d\n", i);
+            exit(1);
+       }
+    }
+}
 
 void microbench()
 {
@@ -82,5 +96,6 @@ int main(){
     }
   
     microbench();
+    verify(n);
     return 0;
 }
