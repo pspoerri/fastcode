@@ -4,10 +4,15 @@ import sys
 import pickle
 
 RUN_CONFIGURATION = {
-    "warmup.c": range(4, 16, 4),
-#"warmup.c": range(4, 816, 4),
+    "base.c": { 
+        "range": range(4, 16, 4),
+        "flags": "-m64 -march=corei7 -fno-tree-vectorize -O3".split(" ")
+    },
+    "auto.c": {
+        "range": range(4, 16, 4),
+        "flags": "-m64 -march=corei7 -O3".split(" ")
+    },
 }
-COMPILE_FLAGS = "-m64 -march=corei7 -fno-tree-vectorize -O3".split(" ")
 COMPILE_FILES = ["main.c", "ftimer.c"]
 COMPILER = "gcc-4.7"
 
@@ -32,7 +37,7 @@ def total_flops(NB):
 #
 
         
-def benchmark(SRC, NB):
+def benchmark(SRC, NB, COMPILE_FLAGS):
     command_name = SRC[:-2]
     compile_args_shell = [COMPILER, "-DN="+str(NB) ]+COMPILE_FLAGS+["-o", command_name, SRC]+COMPILE_FILES
 #    print compile_args_shell
@@ -56,13 +61,15 @@ def benchmark(SRC, NB):
 def measure():
     data = {}
 
-    for f,block_sizes in RUN_CONFIGURATION.iteritems():
+    for f,conf in RUN_CONFIGURATION.iteritems():
+        block_sizes = conf["range"]
+        COMPILE_FLAGS = conf["flags"]
         results = []
         print f
         # benchmark(f, 2)
         for block_size in block_sizes:
             # verify(f, block_size)
-            result_run = benchmark(f, block_size)
+            result_run = benchmark(f, block_size, COMPILE_FLAGS)
             results += [result_run]
             print result_run
             # print str(block_size)
