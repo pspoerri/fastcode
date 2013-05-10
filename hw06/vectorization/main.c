@@ -26,7 +26,7 @@ void verify(int n)
     for (i=0; i<n-3; i++)
     {
        float val = fabs(y[i] - (h3*x[i] + h2*x[i+1] + h1*x[i+2] + h0*x[i+3]));
-       if (val >1e-3)
+       if (val >1e-6)
        {
             printf("Error at %d with %f\n", i, val);
 
