@@ -4,10 +4,7 @@ import pickle
 plt.rc('text', usetex=True)
 plt.rc('font', family='serif')
 
-#filename = 'run_13_04_16__10_10.pickle'
-#filename = 'run_13_04_16__10_23.pickle'
-#filename = 'run_13_05_09__15_04.pickle'
-filename = 'run_13_05_09__19_13.pickle'
+filename = 'run_13_05_10__01_25.pickle'
 fig = plt.figure()
 
 f = open(filename, 'r')
