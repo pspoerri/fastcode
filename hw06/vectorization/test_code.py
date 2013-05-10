@@ -16,11 +16,11 @@ RUN_CONFIGURATION = {
         "range": range(4, 804, 4),
         "flags": "-m64 -march=corei7-avx -O3".split(" ")
     },
-    "manual1.c": {
+    "manual3.c": {
         "range": range(4, 804, 4),
         "flags": "-m64 -march=corei7-avx -O3".split(" ")
     },
-    "manual2.c": {
+    "manual4.c": {
         "range": range(4, 804, 4),
         "flags": "-m64 -march=corei7-avx -O3".split(" ")
     },
