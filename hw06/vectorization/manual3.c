@@ -34,8 +34,5 @@ void FIR(float *y, float *x, float h0, float h1, float h2, float h3, int size)
         l = r;
         il = ir;
     }
-
-//    printf("h0 %f, h1 %f, h2 %f, h3 %f\n", h0, h1, h2, h3);
-//    printf("%f %f %f %f %f %f %f %f\n", y[0], y[1], y[2], y[3], y[4],y[5], y[6],y[7]);
 }
 
